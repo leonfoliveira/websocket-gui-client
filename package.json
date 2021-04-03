@@ -1,6 +1,6 @@
 {
   "name": "websocket-client",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "author": "Leonardo Oliveira <leonfoliveira@gmail.com>",
   "repository": "https://github.com/leonfoliveira/websocket-client.git",
   "description": "A simple WebSocket client",
