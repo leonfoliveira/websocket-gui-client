@@ -13,7 +13,8 @@
     "test": "jest --passWithNoTests --no-cache --runInBand",
     "test:watch": "yarn test --watch",
     "test:staged": "yarn test --findRelatedTests",
-    "test:ci": "yarn test --coverage"
+    "test:ci": "yarn test --coverage",
+    "update": "yarn-check -u -s"
   },
   "dependencies": {
     "react": "^17.0.2",
@@ -47,7 +48,8 @@
     "react-scripts": "4.0.3",
     "ts-jest": "^26.5.4",
     "typescript": "^4.1.2",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^1.0.1",
+    "yarn-check": "^0.0.3"
   },
   "homepage": ".",
   "lint-staged": {
