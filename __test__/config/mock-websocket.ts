@@ -7,6 +7,7 @@ class WebSocketSpy {
   constructor(public url: string) {}
 
   close = jest.fn();
+  send = jest.fn();
 }
 
 export const mockWebSocket = (): void => {
