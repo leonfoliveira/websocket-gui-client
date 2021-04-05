@@ -1,5 +1,6 @@
 import faker from 'faker';
 import { MockProxy, mock } from 'jest-mock-extended';
+import MockDate from 'mockdate';
 
 import { KeyGenerator } from '@/data/interfaces';
 import { WsClient, WsOpenConnection } from '@/data/usecases';
@@ -20,7 +21,12 @@ const makeSut = (): SutTypes => {
 };
 
 describe('WsOpenConnection', () => {
-  beforeAll(mockWebSocket);
+  beforeAll(() => {
+    mockWebSocket();
+    MockDate.set(new Date());
+  });
+
+  afterAll(MockDate.reset);
 
   it('should create WebSocket client with correct url', () => {
     const { sut } = makeSut();
@@ -54,7 +60,7 @@ describe('WsOpenConnection', () => {
     expect(options.onevent).toHaveBeenCalledWith({
       key: keyGeneratorSpy.generate.mock.results[0].value,
       message: message.data,
-      time: new Date(message.timeStamp * 1000),
+      time: new Date(),
     });
     expect(WsClient.getClient().onerror).toBe(options.onerror);
   });

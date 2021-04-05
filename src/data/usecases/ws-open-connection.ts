@@ -18,7 +18,7 @@ export class WsOpenConnection implements OpenConnection {
           options.onevent({
             key: this.keyGenerator.generate(),
             message: ev.data,
-            time: new Date(ev.timeStamp * 1000),
+            time: new Date(),
           });
         }
       : null;
