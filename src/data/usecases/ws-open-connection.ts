@@ -10,15 +10,15 @@ export class WsOpenConnection implements OpenConnection {
 
     client.onopen = options.onopen;
     client.onclose = options.onclose;
-    client.onmessage = (ev): void => {
-      if (options.onevent) {
-        options.onevent({
-          key: ev.lastEventId,
-          message: ev.data,
-          time: new Date(ev.timeStamp * 1000),
-        });
-      }
-    };
+    client.onmessage = options.onevent
+      ? (ev): void => {
+          options.onevent({
+            key: ev.lastEventId,
+            message: ev.data,
+            time: new Date(ev.timeStamp * 1000),
+          });
+        }
+      : null;
     client.onerror = options.onerror;
   }
 }
