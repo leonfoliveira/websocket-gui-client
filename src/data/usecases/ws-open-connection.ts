@@ -1,8 +1,11 @@
+import { KeyGenerator } from '@/data/interfaces';
 import { OpenConnection } from '@/domain/usecases';
 
 import { WsClient } from './ws-client';
 
 export class WsOpenConnection implements OpenConnection {
+  constructor(private readonly keyGenerator: KeyGenerator) {}
+
   open(url: string, options: OpenConnection.Options = {}): void {
     WsClient.setClient(url);
 
@@ -13,7 +16,7 @@ export class WsOpenConnection implements OpenConnection {
     client.onmessage = options.onevent
       ? (ev): void => {
           options.onevent({
-            key: ev.lastEventId,
+            key: this.keyGenerator.generate(),
             message: ev.data,
             time: new Date(ev.timeStamp * 1000),
           });

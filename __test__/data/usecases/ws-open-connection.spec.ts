@@ -1,16 +1,29 @@
 import faker from 'faker';
+import { MockProxy, mock } from 'jest-mock-extended';
 
+import { KeyGenerator } from '@/data/interfaces';
 import { WsClient, WsOpenConnection } from '@/data/usecases';
 
 import { mockWebSocket } from '@/test/config/mock-websocket';
 
-const makeSut = (): WsOpenConnection => new WsOpenConnection();
+type SutTypes = {
+  sut: WsOpenConnection;
+  keyGeneratorSpy: MockProxy<KeyGenerator>;
+};
+
+const makeSut = (): SutTypes => {
+  const keyGeneratorSpy = mock<KeyGenerator>();
+  keyGeneratorSpy.generate.mockReturnValue(faker.datatype.uuid());
+  const sut = new WsOpenConnection(keyGeneratorSpy);
+
+  return { sut, keyGeneratorSpy };
+};
 
 describe('WsOpenConnection', () => {
   beforeAll(mockWebSocket);
 
   it('should create WebSocket client with correct url', () => {
-    const sut = makeSut();
+    const { sut } = makeSut();
     const url = faker.internet.url();
 
     sut.open(url);
@@ -19,7 +32,7 @@ describe('WsOpenConnection', () => {
   });
 
   it('should create WebSocket client with correct listeners', () => {
-    const sut = makeSut();
+    const { sut, keyGeneratorSpy } = makeSut();
     const options = {
       onopen: jest.fn(),
       onclose: jest.fn(),
@@ -39,7 +52,7 @@ describe('WsOpenConnection', () => {
     expect(WsClient.getClient().onmessage).toBeTruthy();
     WsClient.getClient().onmessage(message);
     expect(options.onevent).toHaveBeenCalledWith({
-      key: message.lastEventId,
+      key: keyGeneratorSpy.generate.mock.results[0].value,
       message: message.data,
       time: new Date(message.timeStamp * 1000),
     });
