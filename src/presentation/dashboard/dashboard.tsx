@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { useUsecase } from '@/presentation/contexts';
 import { ConnectionStatus } from '@/presentation/helpers';
 
 import styles from './dashboard.module.scss';
@@ -11,6 +12,8 @@ type FormType = {
 };
 
 const Dashboard: React.FC = () => {
+  const { openConnection, closeConnection } = useUsecase();
+
   const {
     register,
     handleSubmit,
@@ -26,14 +29,26 @@ const Dashboard: React.FC = () => {
     ConnectionStatus.disconnected,
   );
 
-  const openConnection = (data: FormType): void => {
-    setIsConnectionOpen(true);
+  const handleOpenConnection = (data: FormType): void => {
     setConnectionStatus(ConnectionStatus.connecting);
+    try {
+      openConnection.open(data.url, {
+        onopen: () => {
+          setIsConnectionOpen(true);
+          setConnectionStatus(ConnectionStatus.connected);
+        },
+        onclose: () => {
+          setIsConnectionOpen(false);
+          setConnectionStatus(ConnectionStatus.disconnected);
+        },
+      });
+    } catch {
+      setConnectionStatus(ConnectionStatus.disconnected);
+    }
   };
 
-  const closeConnection = (): void => {
-    setIsConnectionOpen(false);
-    setConnectionStatus(ConnectionStatus.disconnected);
+  const handleCloseConnection = (): void => {
+    closeConnection.close();
   };
 
   return (
@@ -46,7 +61,6 @@ const Dashboard: React.FC = () => {
               [ConnectionStatus.connected]: styles.connected,
               [ConnectionStatus.connecting]: styles.connecting,
               [ConnectionStatus.disconnected]: styles.disconnected,
-              [ConnectionStatus.error]: styles.error,
             }[connectionStatus],
           )}
           title={
@@ -54,13 +68,12 @@ const Dashboard: React.FC = () => {
               [ConnectionStatus.connected]: 'Connected',
               [ConnectionStatus.connecting]: 'Connecting',
               [ConnectionStatus.disconnected]: 'Disconnected',
-              [ConnectionStatus.error]: 'Error',
             }[connectionStatus]
           }
         />
         <form
           className={styles.form}
-          onSubmit={handleSubmit(isConnectionOpen ? closeConnection : openConnection)}
+          onSubmit={handleSubmit(isConnectionOpen ? handleCloseConnection : handleOpenConnection)}
         >
           <input
             className={clsx(styles.input, errors.url && styles.error)}
