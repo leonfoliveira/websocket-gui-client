@@ -1,14 +1,12 @@
 import { EventModel } from '@/domain/models';
 
 export interface OpenConnection {
-  open: (url: string, options?: OpenConnection.Options) => void;
+  open: (url: string, listeners?: Listeners) => void;
 }
 
-export namespace OpenConnection {
-  export type Options = {
-    onopen?: () => void;
-    onclose?: () => void;
-    onevent?: (event: EventModel) => void;
-    onerror?: () => void;
-  };
-}
+export type Listeners = {
+  onopen?: () => void;
+  onclose?: () => void;
+  onevent?: (event: EventModel) => void;
+  onerror?: () => void;
+};

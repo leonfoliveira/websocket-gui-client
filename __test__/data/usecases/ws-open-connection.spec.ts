@@ -39,7 +39,7 @@ describe('WsOpenConnection', () => {
 
   it('should create WebSocket client with correct listeners', () => {
     const { sut, keyGeneratorSpy } = makeSut();
-    const options = {
+    const listeners = {
       onopen: jest.fn(),
       onclose: jest.fn(),
       onevent: jest.fn(),
@@ -51,17 +51,17 @@ describe('WsOpenConnection', () => {
       timeStamp: faker.datatype.number(),
     };
 
-    sut.open(faker.internet.url(), options);
+    sut.open(faker.internet.url(), listeners);
 
-    expect(WsClient.getClient().onopen).toBe(options.onopen);
-    expect(WsClient.getClient().onclose).toBe(options.onclose);
+    expect(WsClient.getClient().onopen).toBe(listeners.onopen);
+    expect(WsClient.getClient().onclose).toBe(listeners.onclose);
     expect(WsClient.getClient().onmessage).toBeTruthy();
     WsClient.getClient().onmessage(message);
-    expect(options.onevent).toHaveBeenCalledWith({
+    expect(listeners.onevent).toHaveBeenCalledWith({
       key: keyGeneratorSpy.generate.mock.results[0].value,
       message: message.data,
       time: new Date(),
     });
-    expect(WsClient.getClient().onerror).toBe(options.onerror);
+    expect(WsClient.getClient().onerror).toBe(listeners.onerror);
   });
 });
