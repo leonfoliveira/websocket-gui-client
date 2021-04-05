@@ -1,0 +1,84 @@
+@import '~@/presentation/styles/colors.scss';
+
+.dashboard {
+  .header {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    background-color: $c-background-dark;
+    box-shadow: 0 0 5px 0 $c-black;
+
+    .status {
+      height: 25px;
+      width: 25px;
+      margin: 0 15px;
+      border-radius: 50%;
+      background-color: rgba($c-white, 0.2);
+
+      &.connected {
+        background-color: $c-success;
+      }
+
+      &.connecting {
+        animation: connecting 1s infinite ease-out;
+      }
+
+      &.error {
+        background-color: $c-error;
+      }
+    }
+
+    .form {
+      flex: 1;
+      display: flex;
+      height: 100%;
+
+      .input {
+        flex: 1;
+        border: none;
+        background-color: transparent;
+        font-size: 16px;
+        transition: border-width 100ms;
+        transition: color 200ms;
+
+        &.error {
+          border-left: 5px solid $c-error;
+          padding-left: 5px;
+        }
+
+        &:disabled {
+          color: rgba($c-text, 0.5);
+        }
+      }
+
+      .submit {
+        width: 100px;
+        border: none;
+        background-color: transparent;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        text-transform: uppercase;
+
+        &:hover {
+          background-color: rgba($c-white, 0.05);
+        }
+
+        &:active {
+          background-color: rgba($c-white, 0.1);
+        }
+      }
+    }
+  }
+}
+
+@keyframes connecting {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(0);
+  }
+}
