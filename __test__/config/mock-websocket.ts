@@ -5,6 +5,8 @@ class WebSocketSpy {
   onerror = null;
 
   constructor(public url: string) {}
+
+  close = jest.fn();
 }
 
 export const mockWebSocket = (): void => {
