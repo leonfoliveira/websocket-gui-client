@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { useState } from 'react';
 
 import { EventModel } from '@/domain/models';
@@ -17,30 +18,34 @@ const Dashboard: React.FC = () => {
 
   const [events, setEvents] = useState<EventModel[]>([]);
 
+  const pushEvent = (event: EventModel): void =>
+    setEvents((currentState) => [...currentState, event]);
+
   const handleOpenConnection = (url: string): void => {
     setConnectionStatus(ConnectionStatus.connecting);
     try {
       openConnection.open(url, {
-        onopen: () => {
+        onopen: (event: EventModel) => {
+          pushEvent(event);
           setIsConnectionOpen(true);
           setConnectionStatus(ConnectionStatus.connected);
         },
-        onclose: () => {
+        onclose: (event: EventModel) => {
+          pushEvent(event);
           setIsConnectionOpen(false);
           setConnectionStatus(ConnectionStatus.disconnected);
         },
-        onevent: (event: EventModel) => {
-          setEvents((currentState) => [...currentState, event]);
-        },
+        onevent: pushEvent,
+        onerror: pushEvent,
       });
     } catch {
       setConnectionStatus(ConnectionStatus.disconnected);
     }
   };
 
-  const handleCloseConnection = (): void => {
-    closeConnection.close();
-  };
+  const handleCloseConnection = (): void => closeConnection.close();
+
+  const handleClearEvents = (): void => setEvents([]);
 
   return (
     <main className={styles.dashboard}>
@@ -55,14 +60,20 @@ const Dashboard: React.FC = () => {
           <div className={styles.overflow}>
             <ul className={styles.eventList}>
               {events.map((event) => (
-                <li key={event.key} className={styles.event}>
+                <li key={event.key} className={clsx(styles.event, styles[event.type])}>
                   <time className={styles.time}>{event.time.toISOString()}</time>
-                  <code className={styles.message}>{event.message}</code>
+                  <p className={styles.message}>
+                    {{
+                      'connection-open': 'Connection Open',
+                      'connection-close': 'Connection Closed',
+                      error: 'Connection Error',
+                    }[event.type] || event.message}
+                  </p>
                 </li>
               ))}
             </ul>
           </div>
-          <button type="button" className={styles.clearButton}>
+          <button type="button" className={styles.clearButton} onClick={handleClearEvents}>
             clear
           </button>
         </div>

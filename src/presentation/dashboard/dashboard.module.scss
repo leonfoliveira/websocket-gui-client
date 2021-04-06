@@ -19,17 +19,52 @@
         overflow: auto;
 
         .eventList {
-          padding: 15px 30px 30px;
-          list-style: none;
+          padding: 15px 0 30px;
 
           .event {
-            margin: 15px 0;
             display: flex;
+            align-items: flex-start;
             flex-direction: column;
+            padding: 10px 30px;
+
+            &:hover {
+              background-color: $c-background-dark;
+            }
 
             .time {
               color: rgba($c-text, 0.5);
               font-size: 14px;
+            }
+
+            &.connection-open,
+            &.connection-close,
+            &.error {
+              align-items: center;
+
+              .message {
+                margin-top: 5px;
+                border-radius: 20px;
+                padding: 0 20px;
+                font-weight: 600;
+                font-size: 15px;
+              }
+            }
+
+            &.connection-open {
+              .message {
+                background-color: rgba($c-success, 0.7);
+              }
+            }
+
+            &.connection-close,
+            &.error {
+              .message {
+                background-color: rgba($c-error, 0.7);
+              }
+            }
+
+            &.client-event {
+              align-items: flex-end;
             }
           }
         }
