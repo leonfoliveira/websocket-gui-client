@@ -13,8 +13,9 @@ export class WsSendEvent implements SendEvent {
 
     return {
       key: this.keyGenerator.generate(),
-      message,
       time: new Date(),
+      type: 'client-event',
+      message,
     };
   }
 }

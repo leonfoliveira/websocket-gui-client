@@ -1,5 +1,6 @@
 export type EventModel = {
   key: string;
   time: Date;
-  message: string;
+  type: 'server-event' | 'client-event' | 'connection-open' | 'connection-close' | 'error';
+  message?: string;
 };

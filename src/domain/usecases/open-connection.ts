@@ -5,8 +5,8 @@ export interface OpenConnection {
 }
 
 export type Listeners = {
-  onopen?: () => void;
-  onclose?: () => void;
+  onopen?: (event: EventModel) => void;
+  onclose?: (event: EventModel) => void;
   onevent?: (event: EventModel) => void;
-  onerror?: () => void;
+  onerror?: (event: EventModel) => void;
 };

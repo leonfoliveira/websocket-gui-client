@@ -1,4 +1,5 @@
 import { KeyGenerator } from '@/data/interfaces';
+import { EventModel } from '@/domain/models';
 import { OpenConnection, Listeners } from '@/domain/usecases';
 
 import { WsClient } from './ws-client';
@@ -11,17 +12,25 @@ export class WsOpenConnection implements OpenConnection {
 
     const client = WsClient.getClient();
 
-    client.onopen = listeners.onopen;
-    client.onclose = listeners.onclose;
-    client.onmessage = listeners.onevent
-      ? (ev): void => {
-          listeners.onevent({
+    client.onopen = this.adapt(listeners.onopen, 'connection-open');
+    client.onclose = this.adapt(listeners.onclose, 'connection-close') as () => void;
+    client.onmessage = this.adapt(listeners.onevent, 'server-event');
+    client.onerror = this.adapt(listeners.onerror, 'error');
+  }
+
+  private adapt(
+    listener: (event: EventModel) => void,
+    type: EventModel['type'],
+  ): (ev?: MessageEvent) => void {
+    return listener
+      ? (ev?: MessageEvent): void => {
+          listener({
             key: this.keyGenerator.generate(),
-            message: ev.data,
             time: new Date(),
+            type,
+            message: ev?.data,
           });
         }
       : null;
-    client.onerror = listeners.onerror;
   }
 }
