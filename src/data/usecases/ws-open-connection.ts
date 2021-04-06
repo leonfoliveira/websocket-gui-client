@@ -21,14 +21,14 @@ export class WsOpenConnection implements OpenConnection {
   private adapt(
     listener: (event: EventModel) => void,
     type: EventModel['type'],
-  ): (ev?: MessageEvent) => void {
+  ): (ev: MessageEvent) => void {
     return listener
-      ? (ev?: MessageEvent): void => {
+      ? (ev: MessageEvent): void => {
           listener({
             key: this.keyGenerator.generate(),
             time: new Date(),
             type,
-            message: ev?.data,
+            message: ev.data,
           });
         }
       : null;
