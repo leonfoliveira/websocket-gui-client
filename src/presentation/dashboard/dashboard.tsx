@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { EventModel } from '@/domain/models';
 import { useUsecase } from '@/presentation/contexts';
@@ -17,9 +17,14 @@ const Dashboard: React.FC = () => {
   );
 
   const [events, setEvents] = useState<EventModel[]>([]);
+  const scrollBottom = useRef<HTMLSpanElement>(null);
 
-  const pushEvent = (event: EventModel): void =>
+  const pushEvent = (event: EventModel): void => {
     setEvents((currentState) => [...currentState, event]);
+    const { top } = scrollBottom.current.getBoundingClientRect();
+    if (top - 100 <= window.innerHeight)
+      scrollBottom.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const handleOpenConnection = (url: string): void => {
     setConnectionStatus(ConnectionStatus.connecting);
@@ -71,6 +76,7 @@ const Dashboard: React.FC = () => {
                   </p>
                 </li>
               ))}
+              <span ref={scrollBottom} />
             </ul>
           </div>
           <button type="button" className={styles.clearButton} onClick={handleClearEvents}>
