@@ -1,15 +1,75 @@
 @import '~@/presentation/styles/colors.scss';
 
 .dashboard {
-}
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 
-@keyframes connecting {
-  0%,
-  100% {
-    transform: scale(1);
-  }
+  .content {
+    flex: 1;
+    background-color: $c-background;
+    overflow: hidden;
 
-  50% {
-    transform: scale(0);
+    .sider {
+      position: relative;
+      height: 100%;
+
+      .overflow {
+        height: 100%;
+        overflow: auto;
+
+        .eventList {
+          padding: 15px 30px 30px;
+          list-style: none;
+
+          .event {
+            margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+
+            .time {
+              color: rgba($c-text, 0.5);
+              font-size: 14px;
+            }
+          }
+        }
+      }
+
+      .clearButton {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 70px;
+        border: none;
+        border-radius: 13px;
+        background-color: $c-background;
+        box-shadow: 0 0 3px 0 rgba($c-black, 0.2);
+        line-height: 25px;
+        font-size: 14px;
+        color: rgba($c-text, 0.6);
+        cursor: pointer;
+        transition: background-color 100ms;
+        overflow: hidden;
+
+        &::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          display: block;
+          width: 100%;
+          height: 100%;
+        }
+
+        &:hover::after {
+          background-color: rgba($c-black, 0.1);
+        }
+
+        &:active::after {
+          background-color: rgba($c-black, 0.2);
+        }
+      }
+    }
   }
 }
