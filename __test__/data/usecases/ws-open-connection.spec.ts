@@ -53,15 +53,36 @@ describe('WsOpenConnection', () => {
 
     sut.open(faker.internet.url(), listeners);
 
-    expect(WsClient.getClient().onopen).toBe(listeners.onopen);
-    expect(WsClient.getClient().onclose).toBe(listeners.onclose);
-    expect(WsClient.getClient().onmessage).toBeTruthy();
+    WsClient.getClient().onopen({} as any);
+    expect(listeners.onopen).toHaveBeenCalledWith({
+      key: keyGeneratorSpy.generate.mock.results[0].value,
+      time: new Date(),
+      type: 'connection-open',
+    });
+    WsClient.getClient().onclose({} as any);
+    expect(listeners.onclose).toHaveBeenCalledWith({
+      key: keyGeneratorSpy.generate.mock.results[0].value,
+      time: new Date(),
+      type: 'connection-close',
+    });
+    WsClient.getClient().onclose({} as any);
+    expect(listeners.onclose).toHaveBeenCalledWith({
+      key: keyGeneratorSpy.generate.mock.results[0].value,
+      time: new Date(),
+      type: 'connection-close',
+    });
     WsClient.getClient().onmessage(message);
     expect(listeners.onevent).toHaveBeenCalledWith({
       key: keyGeneratorSpy.generate.mock.results[0].value,
-      message: message.data,
       time: new Date(),
+      type: 'server-event',
+      message: message.data,
     });
-    expect(WsClient.getClient().onerror).toBe(listeners.onerror);
+    WsClient.getClient().onerror({} as any);
+    expect(listeners.onerror).toHaveBeenCalledWith({
+      key: keyGeneratorSpy.generate.mock.results[0].value,
+      time: new Date(),
+      type: 'error',
+    });
   });
 });

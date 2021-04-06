@@ -47,6 +47,7 @@ describe('SendEvent', () => {
     expect(result).toEqual({
       key: keyGeneratorSpy.generate.mock.results[0].value,
       time: new Date(),
+      type: 'client-event',
       message,
     });
   });
