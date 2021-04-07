@@ -38,8 +38,7 @@
       border: none;
       background-color: transparent;
       font-size: 16px;
-      transition: border-width 100ms;
-      transition: color 200ms;
+      transition: border-width 200ms, color 200ms;
 
       &.error {
         border-left: 5px solid $c-error;
