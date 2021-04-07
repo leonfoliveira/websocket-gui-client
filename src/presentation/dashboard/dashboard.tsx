@@ -17,13 +17,23 @@ const Dashboard: React.FC = () => {
   );
 
   const [events, setEvents] = useState<EventModel[]>([]);
+  const [history, setHistory] = useState<EventModel[]>([]);
   const scrollBottom = useRef<HTMLSpanElement>(null);
+  const historyScrollBottom = useRef<HTMLSpanElement>(null);
+
+  const scrollToBottom = (element: HTMLElement): void => {
+    const { top } = element.getBoundingClientRect();
+    if (top - 100 <= window.innerHeight) element?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const pushEvent = (event: EventModel): void => {
     setEvents((currentState) => [...currentState, event]);
-    const { top } = scrollBottom.current.getBoundingClientRect();
-    if (top - 100 <= window.innerHeight)
-      scrollBottom.current?.scrollIntoView({ behavior: 'smooth' });
+    scrollToBottom(scrollBottom.current);
+  };
+
+  const pushHistory = (event: EventModel): void => {
+    setHistory((currentState) => [...currentState, event]);
+    scrollToBottom(historyScrollBottom.current);
   };
 
   const handleOpenConnection = (url: string): void => {
@@ -52,9 +62,12 @@ const Dashboard: React.FC = () => {
 
   const handleClearEvents = (): void => setEvents([]);
 
+  const handleClearHistory = (): void => setHistory([]);
+
   const handleSendEvent = (message: string): void => {
     const clientEvent = sendEvent.send(message);
     pushEvent(clientEvent);
+    pushHistory(clientEvent);
   };
 
   return (
@@ -68,7 +81,18 @@ const Dashboard: React.FC = () => {
       <div className={styles.content}>
         <div className={styles.sider}>
           <div className={styles.overflow}>
-            <ul className={styles.eventList} />
+            <ul className={styles.eventList}>
+              {history.map((event) => (
+                <li key={event.key} className={styles.event}>
+                  <time className={styles.time}>{event.time.toISOString()}</time>
+                  <p className={styles.message}>{event.message}</p>
+                </li>
+              ))}
+              <span ref={historyScrollBottom} />
+            </ul>
+            <button type="button" className={styles.clearButton} onClick={handleClearHistory}>
+              clear
+            </button>
           </div>
           <MessageEditor
             isDisabled={connectionStatus !== ConnectionStatus.connected}
@@ -92,10 +116,10 @@ const Dashboard: React.FC = () => {
               ))}
               <span ref={scrollBottom} />
             </ul>
+            <button type="button" className={styles.clearButton} onClick={handleClearEvents}>
+              clear
+            </button>
           </div>
-          <button type="button" className={styles.clearButton} onClick={handleClearEvents}>
-            clear
-          </button>
         </div>
       </div>
     </main>
