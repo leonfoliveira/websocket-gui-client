@@ -5,7 +5,7 @@ import { EventModel } from '@/domain/models';
 import { useUsecase } from '@/presentation/contexts';
 import { ConnectionStatus } from '@/presentation/helpers';
 
-import { ConnectionHeader } from './components';
+import { ConnectionHeader, MessageEditor } from './components';
 import styles from './dashboard.module.scss';
 
 const Dashboard: React.FC = () => {
@@ -61,6 +61,12 @@ const Dashboard: React.FC = () => {
         handleCloseConnection={handleCloseConnection}
       />
       <div className={styles.content}>
+        <div className={styles.sider}>
+          <div className={styles.overflow}>
+            <ul className={styles.eventList} />
+          </div>
+          <MessageEditor />
+        </div>
         <div className={styles.sider}>
           <div className={styles.overflow}>
             <ul className={styles.eventList}>

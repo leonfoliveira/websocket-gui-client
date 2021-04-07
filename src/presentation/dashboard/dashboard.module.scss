@@ -7,15 +7,23 @@
 
   .content {
     flex: 1;
+    display: flex;
     background-color: $c-background;
     overflow: hidden;
 
     .sider {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
       position: relative;
       height: 100%;
 
+      &:first-of-type {
+        border-right: 1px solid rgba($c-black, 0.3);
+      }
+
       .overflow {
-        height: 100%;
+        flex: 1;
         overflow: auto;
 
         .eventList {

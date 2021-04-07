@@ -1,0 +1,42 @@
+@import '~@/presentation/styles/colors.scss';
+
+.editor {
+  background-color: $c-background-dark;
+  box-shadow: 0 0 2px 0 rgba($c-black, 0.7);
+  z-index: 1;
+
+  .input {
+    height: 45px;
+    width: 100%;
+    margin-bottom: -5px;
+    padding: 10px 10px;
+    border: 0;
+    border-bottom: 1px solid rgba($c-black, 0.3);
+    background-color: transparent;
+    font-size: 16px;
+    resize: none;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+
+    .submit {
+      width: 80px;
+      border: none;
+      background-color: transparent;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 35px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgba($c-white, 0.05);
+      }
+
+      &:active {
+        background-color: rgba($c-white, 0.1);
+      }
+    }
+  }
+}
