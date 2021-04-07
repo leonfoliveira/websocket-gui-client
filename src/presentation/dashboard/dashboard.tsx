@@ -9,7 +9,7 @@ import { ConnectionHeader, MessageEditor } from './components';
 import styles from './dashboard.module.scss';
 
 const Dashboard: React.FC = () => {
-  const { openConnection, closeConnection } = useUsecase();
+  const { openConnection, closeConnection, sendEvent } = useUsecase();
 
   const [isConnectionOpen, setIsConnectionOpen] = useState<boolean>(false);
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>(
@@ -52,6 +52,11 @@ const Dashboard: React.FC = () => {
 
   const handleClearEvents = (): void => setEvents([]);
 
+  const handleSendEvent = (message: string): void => {
+    const clientEvent = sendEvent.send(message);
+    pushEvent(clientEvent);
+  };
+
   return (
     <main className={styles.dashboard}>
       <ConnectionHeader
@@ -65,7 +70,10 @@ const Dashboard: React.FC = () => {
           <div className={styles.overflow}>
             <ul className={styles.eventList} />
           </div>
-          <MessageEditor />
+          <MessageEditor
+            isDisabled={connectionStatus !== ConnectionStatus.connected}
+            handleSendEvent={handleSendEvent}
+          />
         </div>
         <div className={styles.sider}>
           <div className={styles.overflow}>
