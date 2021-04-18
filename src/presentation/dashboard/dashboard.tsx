@@ -1,14 +1,16 @@
 import clsx from 'clsx';
 import React, { useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 import { EventModel } from '@/domain/models';
 import { useUsecase } from '@/presentation/contexts';
 import { ConnectionStatus } from '@/presentation/helpers';
 
-import { ConnectionHeader, MessageEditor } from './components';
+import { ConnectionHeader, MessageEditor, EditFormType } from './components';
 import styles from './dashboard.module.scss';
 
 const Dashboard: React.FC = () => {
+  const editForm = useForm<EditFormType>();
   const { openConnection, closeConnection, sendEvent } = useUsecase();
 
   const [isConnectionOpen, setIsConnectionOpen] = useState<boolean>(false);
@@ -70,6 +72,11 @@ const Dashboard: React.FC = () => {
     pushHistory(clientEvent);
   };
 
+  const handleCopyEvent = (event: EventModel): void => {
+    editForm.setValue('message', event.message);
+    editForm.trigger('message');
+  };
+
   return (
     <main className={styles.dashboard}>
       <ConnectionHeader
@@ -82,9 +89,15 @@ const Dashboard: React.FC = () => {
         <div className={styles.sider}>
           <div className={styles.content}>
             <div className={styles.overflow}>
-              <ul className={styles.eventList}>
+              <ul className={styles.eventList} role="menu">
                 {history.map((event) => (
-                  <li key={event.key} className={styles.event}>
+                  <li
+                    key={event.key}
+                    role="menuitem"
+                    className={clsx(styles.event, styles.action)}
+                    onClick={(): void => handleCopyEvent(event)}
+                    onKeyPress={(): void => handleCopyEvent(event)}
+                  >
                     <time className={styles.time}>{event.time.toISOString()}</time>
                     <p className={styles.message}>{event.message}</p>
                   </li>
@@ -97,6 +110,7 @@ const Dashboard: React.FC = () => {
             </button>
           </div>
           <MessageEditor
+            form={editForm}
             isDisabled={connectionStatus !== ConnectionStatus.connected}
             handleSendEvent={handleSendEvent}
           />

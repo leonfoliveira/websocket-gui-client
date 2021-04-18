@@ -39,6 +39,14 @@
             flex-direction: column;
             padding: 10px 30px;
 
+            &.action {
+              cursor: pointer;
+
+              &:active {
+                background-color: rgba($c-black, 0.15);
+              }
+            }
+
             &:hover {
               background-color: $c-background-dark;
             }

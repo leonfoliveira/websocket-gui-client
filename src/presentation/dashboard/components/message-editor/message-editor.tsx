@@ -1,24 +1,25 @@
 import clsx from 'clsx';
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { UseFormReturn } from 'react-hook-form';
 
 import styles from './message-editor.module.scss';
 
+export type EditFormType = {
+  message: string;
+};
+
 type PropTypes = {
+  form: UseFormReturn<EditFormType>;
   isDisabled: boolean;
   handleSendEvent: (message: string) => void;
 };
 
-type FormType = {
-  message: string;
-};
-
-const MessageEditor: React.FC<PropTypes> = ({ isDisabled, handleSendEvent }) => {
+const MessageEditor: React.FC<PropTypes> = ({ form, isDisabled, handleSendEvent }) => {
   const {
-    register,
     handleSubmit,
+    register,
     formState: { errors },
-  } = useForm<FormType>();
+  } = form;
 
   return (
     <form
