@@ -26,7 +26,7 @@ const MessageEditor: React.FC<PropTypes> = ({ form, isDisabled, handleSendEvent 
       className={styles.editor}
       onSubmit={handleSubmit(({ message }): void => handleSendEvent(message))}
     >
-      <textarea
+      <input
         className={clsx(styles.input, errors.message && styles.error)}
         placeholder="Message"
         {...register('message', { required: true })}
