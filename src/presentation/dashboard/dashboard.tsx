@@ -80,16 +80,18 @@ const Dashboard: React.FC = () => {
       />
       <div className={styles.content}>
         <div className={styles.sider}>
-          <div className={styles.overflow}>
-            <ul className={styles.eventList}>
-              {history.map((event) => (
-                <li key={event.key} className={styles.event}>
-                  <time className={styles.time}>{event.time.toISOString()}</time>
-                  <p className={styles.message}>{event.message}</p>
-                </li>
-              ))}
-              <span ref={historyScrollBottom} />
-            </ul>
+          <div className={styles.content}>
+            <div className={styles.overflow}>
+              <ul className={styles.eventList}>
+                {history.map((event) => (
+                  <li key={event.key} className={styles.event}>
+                    <time className={styles.time}>{event.time.toISOString()}</time>
+                    <p className={styles.message}>{event.message}</p>
+                  </li>
+                ))}
+                <span ref={historyScrollBottom} />
+              </ul>
+            </div>
             <button type="button" className={styles.clearButton} onClick={handleClearHistory}>
               clear
             </button>
@@ -100,22 +102,24 @@ const Dashboard: React.FC = () => {
           />
         </div>
         <div className={styles.sider}>
-          <div className={styles.overflow}>
-            <ul className={styles.eventList}>
-              {events.map((event) => (
-                <li key={event.key} className={clsx(styles.event, styles[event.type])}>
-                  <time className={styles.time}>{event.time.toISOString()}</time>
-                  <p className={styles.message}>
-                    {{
-                      'connection-open': 'Connection Open',
-                      'connection-close': 'Connection Closed',
-                      error: 'Connection Error',
-                    }[event.type] || event.message}
-                  </p>
-                </li>
-              ))}
-              <span ref={scrollBottom} />
-            </ul>
+          <div className={styles.content}>
+            <div className={styles.overflow}>
+              <ul className={styles.eventList}>
+                {events.map((event) => (
+                  <li key={event.key} className={clsx(styles.event, styles[event.type])}>
+                    <time className={styles.time}>{event.time.toISOString()}</time>
+                    <p className={styles.message}>
+                      {{
+                        'connection-open': 'Connection Open',
+                        'connection-close': 'Connection Closed',
+                        error: 'Connection Error',
+                      }[event.type] || event.message}
+                    </p>
+                  </li>
+                ))}
+                <span ref={scrollBottom} />
+              </ul>
+            </div>
             <button type="button" className={styles.clearButton} onClick={handleClearEvents}>
               clear
             </button>
