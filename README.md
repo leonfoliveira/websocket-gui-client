@@ -35,14 +35,14 @@ yarn start
 
 ### Linux
 
-- [deb](https://drive.google.com/uc?export=download&id=1t0T1FppbwWcvDIu0U3WCwTxfNjRE0ro8)
-- [rpm](https://drive.google.com/uc?export=download&id=19iOPsujNqqajbBEx0eZhdyUDHPamwcNF)
-- [tar.gz](https://drive.google.com/uc?export=download&id=1jGePTiBUmjWTFtDOmigkVO6bm4DkkG6Z)
+- [deb](https://drive.google.com/uc?export=download&id=1SbaydD9Iedg814CsocrSstdJNNsdABCg)
+- [rpm](https://drive.google.com/uc?export=download&id=1XstK85jTLIprjZ1eAue2BeUm0uyWKCh_)
+- [tar.gz](https://drive.google.com/uc?export=download&id=1lnj-PiLh2f7oyAWfVZ5BNzJ8QKkKgOga)
 
 ### Windows
 
-- [Installer](https://drive.google.com/uc?export=download&id=1-wDzF5lqacfLSkj16nPeX4nrI8i4Cghq)
-- [Portable](https://drive.google.com/uc?export=download&id=1Az2GzBVMtl5xB6pOnZWLaebNr1HhB4Uz)
+- [Installer](https://drive.google.com/uc?export=download&id=1VeSwusHndI61ZowrQvfev9fvevIk_kNH)
+- [Portable](https://drive.google.com/uc?export=download&id=13ANps8voMaBaG2ScD8uxtrzvgM8vF2P7)
 
 ## Planned Features
 
