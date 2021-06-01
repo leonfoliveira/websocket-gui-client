@@ -30,6 +30,7 @@ const MessageEditor: React.FC<PropTypes> = ({ form, isDisabled, handleSendEvent 
         className={clsx(styles.input, errors.message && styles.error)}
         placeholder="Message"
         {...register('message', { required: true })}
+        spellCheck="false"
       />
       <footer className={styles.footer}>
         <button className={styles.submit} type="submit" disabled={isDisabled}>

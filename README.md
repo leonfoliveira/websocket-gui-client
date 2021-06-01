@@ -19,29 +19,16 @@ A simple WebSocket client GUI, built on top of Electron.
 yarn dev
 ```
 
-### Run in Production Mode
-
-```
-yarn start
-```
-
 ### Create a Production Build
 
 ```
 yarn build
 ```
 
-### Package and Distribute
+### Run in Production Mode
 
 ```
-yarn dist
-```
-
-### Build, Package and Distribute using Docker
-
-```
-chmod +x ./build.sh
-./build.sh
+yarn start
 ```
 
 ## Download
