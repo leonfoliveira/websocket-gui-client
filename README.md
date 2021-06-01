@@ -7,6 +7,10 @@
 
 A simple WebSocket client GUI, built on top of Electron.
 
+## Preview
+
+![Preview](./assets/preview.png)
+
 ## Scripts
 
 ### Run in Development Mode
@@ -39,3 +43,16 @@ yarn dist
 chmod +x ./build.sh
 ./build.sh
 ```
+
+## Download
+
+### Linux
+
+- [deb](https://drive.google.com/uc?export=download&id=1t0T1FppbwWcvDIu0U3WCwTxfNjRE0ro8)
+- [rpm](https://drive.google.com/uc?export=download&id=19iOPsujNqqajbBEx0eZhdyUDHPamwcNF)
+- [tar.gz](https://drive.google.com/uc?export=download&id=1jGePTiBUmjWTFtDOmigkVO6bm4DkkG6Z)
+
+### Windows
+
+- [Installer](https://drive.google.com/uc?export=download&id=1-wDzF5lqacfLSkj16nPeX4nrI8i4Cghq)
+- [Portable](https://drive.google.com/uc?export=download&id=1Az2GzBVMtl5xB6pOnZWLaebNr1HhB4Uz)
