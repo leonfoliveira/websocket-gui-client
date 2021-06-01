@@ -65,6 +65,7 @@ const ConnectionHeader: React.FC<PropTypes> = ({
           title={errors.url && 'Must be a valid url starting with ws:// or wss://'}
           {...register('url', { required: true, pattern: /^wss?:\/\/.+/ })}
           disabled={isConnectionOpen}
+          spellCheck="false"
         />
         <button className={styles.submit} type="submit">
           {isConnectionOpen ? 'Close' : 'Open'}
