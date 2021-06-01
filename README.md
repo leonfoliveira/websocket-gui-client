@@ -56,3 +56,12 @@ chmod +x ./build.sh
 
 - [Installer](https://drive.google.com/uc?export=download&id=1-wDzF5lqacfLSkj16nPeX4nrI8i4Cghq)
 - [Portable](https://drive.google.com/uc?export=download&id=1Az2GzBVMtl5xB6pOnZWLaebNr1HhB4Uz)
+
+## Planned Features
+
+- JSON formatter
+- Multiple Tabs
+- [Socket.io](https://socket.io/) support
+- Environment variables
+- Connection options
+- Mocked socket server creator
