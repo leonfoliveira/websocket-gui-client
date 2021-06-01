@@ -6,3 +6,36 @@
 [![Open Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://opensource.org/)
 
 A simple WebSocket client GUI, built on top of Electron.
+
+## Scripts
+
+### Run in Development Mode
+
+```
+yarn dev
+```
+
+### Run in Production Mode
+
+```
+yarn start
+```
+
+### Create a Production Build
+
+```
+yarn build
+```
+
+### Package and Distribute
+
+```
+yarn dist
+```
+
+### Build, Package and Distribute using Docker
+
+```
+chmod +x ./build.sh
+./build.sh
+```

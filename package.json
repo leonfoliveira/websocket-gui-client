@@ -13,7 +13,7 @@
     "build": "react-app-rewired build",
     "start": "electron-forge start",
     "package": "electron-forge package",
-    "make": "electron-forge make",
+    "dist": "electron-builder",
     "test": "jest --passWithNoTests --no-cache --runInBand",
     "test:watch": "yarn test --watch",
     "test:staged": "yarn test --findRelatedTests",
@@ -45,6 +45,7 @@
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.20.0",
     "electron": "^12.0.2",
+    "electron-builder": "^22.10.5",
     "eslint": "^7.23.0",
     "eslint-config-airbnb-typescript": "^12.3.1",
     "eslint-config-prettier": "^8.1.0",
@@ -73,7 +74,7 @@
     "web-vitals": "^1.0.1",
     "yarn-check": "^0.0.3"
   },
-  "homepage": ".",
+  "homepage": "./",
   "lint-staged": {
     "*.{ts,tsx}": [
       "eslint . --fix",
@@ -92,31 +93,21 @@
       "last 1 safari version"
     ]
   },
-  "config": {
-    "forge": {
-      "packagerConfig": {},
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "websocket_client"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
-        }
-      ]
+  "build": {
+    "extends": null,
+    "appId": "com.leonfoliveira.websocket-client",
+    "files": [
+      "main.js",
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "linux": {
+      "target": [
+        "tar.gz",
+        "deb",
+        "rpm"
+      ],
+      "category": "Development"
     }
   }
 }
