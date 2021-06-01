@@ -5,7 +5,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/leonfoliveira/websocket-client/badge.svg?branch=main)](https://coveralls.io/github/leonfoliveira/websocket-client?branch=main)
 [![Open Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://opensource.org/)
 
-A simple WebSocket client GUI, built on top of Electron.
+A simple WebSocket client GUI ideal for development testing, built on top of Electron.
 
 ## Preview
 
@@ -25,7 +25,7 @@ yarn dev
 yarn build
 ```
 
-### Run in Production Mode
+### Run Production Build
 
 ```
 yarn start
