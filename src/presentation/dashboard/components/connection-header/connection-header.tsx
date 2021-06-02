@@ -2,6 +2,8 @@ import clsx from 'clsx';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
+import { EventModel } from '@/domain/models';
+import { useConnection } from '@/presentation/contexts';
 import { ConnectionStatus } from '@/presentation/helpers';
 
 import styles from './connection-header.module.scss';
@@ -11,18 +13,10 @@ type FormType = {
 };
 
 type PropTypes = {
-  isConnectionOpen: boolean;
-  connectionStatus: ConnectionStatus;
-  handleOpenConnection: (url: string) => void;
-  handleCloseConnection: () => void;
+  eventHandler: (event: EventModel) => void;
 };
 
-const ConnectionHeader: React.FC<PropTypes> = ({
-  isConnectionOpen,
-  connectionStatus,
-  handleOpenConnection,
-  handleCloseConnection,
-}) => {
+const ConnectionHeader: React.FC<PropTypes> = ({ eventHandler }) => {
   const {
     register,
     handleSubmit,
@@ -32,6 +26,11 @@ const ConnectionHeader: React.FC<PropTypes> = ({
       url: 'ws://',
     },
   });
+  const { isConnectionOpen, connectionStatus, openConnection, closeConnection } = useConnection();
+
+  const handleOpenConnection = (url: string): void => openConnection(url, eventHandler);
+
+  const handleCloseConnection = (): void => closeConnection();
 
   return (
     <header className={styles.header}>

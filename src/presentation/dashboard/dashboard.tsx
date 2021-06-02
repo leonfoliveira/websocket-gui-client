@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { EventModel } from '@/domain/models';
-import { useUsecase } from '@/presentation/contexts';
+import { useConnection, useUsecase } from '@/presentation/contexts';
 import { ConnectionStatus } from '@/presentation/helpers';
 
 import { ConnectionHeader, MessageEditor, EditFormType } from './components';
@@ -11,12 +11,8 @@ import styles from './dashboard.module.scss';
 
 const Dashboard: React.FC = () => {
   const editForm = useForm<EditFormType>();
-  const { openConnection, closeConnection, sendEvent } = useUsecase();
-
-  const [isConnectionOpen, setIsConnectionOpen] = useState<boolean>(false);
-  const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>(
-    ConnectionStatus.disconnected,
-  );
+  const { sendEvent } = useUsecase();
+  const { connectionStatus } = useConnection();
 
   const [events, setEvents] = useState<EventModel[]>([]);
   const [history, setHistory] = useState<EventModel[]>([]);
@@ -37,30 +33,6 @@ const Dashboard: React.FC = () => {
     setHistory((currentState) => [...currentState, event]);
     scrollToBottom(historyScrollBottom.current);
   };
-
-  const handleOpenConnection = (url: string): void => {
-    setConnectionStatus(ConnectionStatus.connecting);
-    try {
-      openConnection.open(url, {
-        onopen: (event: EventModel) => {
-          pushEvent(event);
-          setIsConnectionOpen(true);
-          setConnectionStatus(ConnectionStatus.connected);
-        },
-        onclose: (event: EventModel) => {
-          pushEvent(event);
-          setIsConnectionOpen(false);
-          setConnectionStatus(ConnectionStatus.disconnected);
-        },
-        onevent: pushEvent,
-        onerror: pushEvent,
-      });
-    } catch {
-      setConnectionStatus(ConnectionStatus.disconnected);
-    }
-  };
-
-  const handleCloseConnection = (): void => closeConnection.close();
 
   const handleClearEvents = (): void => setEvents([]);
 
@@ -87,12 +59,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <main className={styles.dashboard}>
-      <ConnectionHeader
-        isConnectionOpen={isConnectionOpen}
-        connectionStatus={connectionStatus}
-        handleOpenConnection={handleOpenConnection}
-        handleCloseConnection={handleCloseConnection}
-      />
+      <ConnectionHeader eventHandler={pushEvent} />
       <div className={styles.content}>
         <div className={styles.sider}>
           <div className={styles.content}>

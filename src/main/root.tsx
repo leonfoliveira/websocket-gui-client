@@ -6,7 +6,7 @@ import {
   makeWsOpenConnection,
   makeWsSendEvent,
 } from '@/main/factories/usecases';
-import { UsecasesContext } from '@/presentation/contexts';
+import { UsecasesContext, ConnectionProvider } from '@/presentation/contexts';
 import Dashboard from '@/presentation/dashboard/dashboard';
 
 const Root: React.FC = () => (
@@ -17,7 +17,9 @@ const Root: React.FC = () => (
       sendEvent: makeWsSendEvent(),
     }}
   >
-    <Dashboard />
+    <ConnectionProvider>
+      <Dashboard />
+    </ConnectionProvider>
   </UsecasesContext.Provider>
 );
 
