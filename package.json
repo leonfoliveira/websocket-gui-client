@@ -96,6 +96,7 @@
   "build": {
     "extends": null,
     "appId": "com.leonfoliveira.websocket-client",
+    "productName": "WebSocket Client",
     "files": [
       "main.js",
       "build/**/*",
