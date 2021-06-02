@@ -77,6 +77,14 @@ const Dashboard: React.FC = () => {
     editForm.trigger('message');
   };
 
+  const handleDeleteHistoryEvent = (event: EventModel): void => {
+    setHistory((currentValue) => currentValue.filter((ev) => ev.key !== event.key));
+  };
+
+  const handleDeleteEvent = (event: EventModel): void => {
+    setEvents((currentValue) => currentValue.filter((ev) => ev.key !== event.key));
+  };
+
   return (
     <main className={styles.dashboard}>
       <ConnectionHeader
@@ -91,15 +99,22 @@ const Dashboard: React.FC = () => {
             <div className={styles.overflow}>
               <ul className={styles.eventList} role="menu">
                 {history.map((event) => (
-                  <li
-                    key={event.key}
-                    role="menuitem"
-                    className={clsx(styles.event, styles.action)}
-                    onClick={(): void => handleCopyEvent(event)}
-                    onKeyPress={(): void => handleCopyEvent(event)}
-                  >
-                    <time className={styles.time}>{event.time.toISOString()}</time>
-                    <p className={styles.message}>{event.message}</p>
+                  <li key={event.key} role="menuitem" className={styles.event}>
+                    <button
+                      className={styles.action}
+                      type="button"
+                      onClick={(): void => handleCopyEvent(event)}
+                    >
+                      <time className={styles.time}>{event.time.toISOString()}</time>
+                      <p className={styles.message}>{event.message}</p>
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.deleteButton}
+                      onClick={(): void => handleDeleteHistoryEvent(event)}
+                    >
+                      X
+                    </button>
                   </li>
                 ))}
                 <span ref={historyScrollBottom} />
@@ -129,6 +144,13 @@ const Dashboard: React.FC = () => {
                         error: 'Connection Error',
                       }[event.type] || event.message}
                     </p>
+                    <button
+                      type="button"
+                      className={styles.deleteButton}
+                      onClick={(): void => handleDeleteEvent(event)}
+                    >
+                      X
+                    </button>
                   </li>
                 ))}
                 <span ref={scrollBottom} />
