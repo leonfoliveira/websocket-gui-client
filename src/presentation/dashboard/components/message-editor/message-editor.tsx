@@ -34,6 +34,7 @@ const MessageEditor: React.FC = () => {
     if (!history.selected) return;
     form.setValue('message', history.selected.message);
     form.trigger('message');
+    history.select(null);
   }, [history.selected]);
 
   return (
