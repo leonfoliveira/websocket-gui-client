@@ -14,7 +14,10 @@ type PropTypes = {
 const StatusEvent: React.FC<PropTypes> = ({ event, onDelete }) => (
   <li
     key={event.key}
-    className={clsx(styles.event, styles[event.type === 'connection' ? 'success' : 'error'])}
+    className={clsx(
+      styles.event,
+      styles[event.type === 'connection' ? 'event--success' : 'event--error'],
+    )}
   >
     <time className={styles.time}>{event.time.toISOString()}</time>
     <p className={styles.message}>

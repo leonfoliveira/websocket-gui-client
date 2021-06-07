@@ -12,7 +12,7 @@ const HistoryView: React.FC = () => {
   const autoScroll = useAutoScroll(history.events);
 
   return (
-    <div className={styles.content}>
+    <div className={styles.view}>
       <div className={styles.overflow}>
         <ul className={styles.eventList} role="menu">
           {history.events.map((event) => (

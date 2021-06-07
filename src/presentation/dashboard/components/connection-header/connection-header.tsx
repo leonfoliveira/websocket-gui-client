@@ -28,14 +28,14 @@ const ConnectionHeader: React.FC = () => {
   const handleCloseConnection = connection.close;
 
   return (
-    <header className={styles.header}>
-      <div
+    <header className={styles.container}>
+      <span
         className={clsx(
           styles.status,
           {
-            [WsConnectionStatus.connected]: styles.connected,
-            [WsConnectionStatus.connecting]: styles.connecting,
-            [WsConnectionStatus.disconnected]: styles.disconnected,
+            [WsConnectionStatus.connected]: styles['status--connected'],
+            [WsConnectionStatus.connecting]: styles['status--connecting'],
+            [WsConnectionStatus.disconnected]: styles['status--disconnected'],
           }[connection.status],
         )}
         title={
@@ -53,7 +53,7 @@ const ConnectionHeader: React.FC = () => {
         )}
       >
         <input
-          className={clsx(styles.input, errors.url && styles.error)}
+          className={clsx(styles.input, errors.url && styles['input--error'])}
           type="text"
           placeholder="URL"
           title={errors.url && 'Must be a valid url starting with ws:// or wss://'}

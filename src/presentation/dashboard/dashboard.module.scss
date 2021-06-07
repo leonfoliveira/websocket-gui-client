@@ -1,12 +1,12 @@
 @import '~@/presentation/styles/colors.scss';
 
-.dashboard {
-  display: flex;
+.container {
+  display: grid;
+  grid-template-rows: auto 1fr;
   flex-direction: column;
   height: 100vh;
 
   .content {
-    flex: 1;
     display: flex;
     background-color: $c-background;
     overflow: hidden;
@@ -18,7 +18,7 @@
       height: 100%;
 
       &:first-of-type {
-        border-right: 1px solid rgba($c-black, 0.3);
+        border-right: 1px solid transparentize($c-black, 0.7);
       }
     }
   }

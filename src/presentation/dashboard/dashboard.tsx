@@ -4,7 +4,7 @@ import { ConnectionHeader, MessageEditor, LiveView, HistoryView } from './compon
 import styles from './dashboard.module.scss';
 
 const Dashboard: React.FC = () => (
-  <main className={styles.dashboard}>
+  <main className={styles.container}>
     <ConnectionHeader />
     <div className={styles.content}>
       <div className={styles.sider}>

@@ -38,7 +38,7 @@ const MessageEditor: React.FC = () => {
 
   return (
     <form
-      className={styles.editor}
+      className={styles.container}
       onSubmit={form.handleSubmit(({ message }): void => handleSendEvent(message))}
     >
       <input

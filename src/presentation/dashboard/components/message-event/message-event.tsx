@@ -14,7 +14,7 @@ type PropTypes = {
 };
 
 const MessageEvent: React.FC<PropTypes> = ({ event, onClick, onDelete, align }) => (
-  <li className={clsx(styles.event, align === 'right' && styles['--right'])}>
+  <li className={clsx(styles.event, align === 'right' && styles['event--right'])}>
     {onClick ? (
       <button className={styles.action} type="button" onClick={(): void => onClick(event)}>
         <time className={styles.time}>{event.time.toISOString()}</time>

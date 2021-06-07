@@ -1,0 +1,102 @@
+@import './colors.scss';
+
+.deleteButton {
+  display: none;
+  position: absolute;
+  right: 10px;
+  padding: 0px 5px;
+  background-color: $c-background-dark;
+  box-shadow: 0 0 3px 0 transparentize($c-black, 0.8);
+  color: transparentize($c-text, 0.5);
+  transition: background-color 100ms;
+
+  &:hover {
+    background-color: transparentize($c-black, 0.95);
+  }
+
+  &:active {
+    background-color: transparentize($c-black, 0.9);
+  }
+}
+
+.view {
+  position: relative;
+  flex: 1;
+  background-color: $c-background;
+  overflow: hidden;
+
+  .eventList {
+    height: 100%;
+    overflow: auto;
+    padding: 15px 0 30px;
+  }
+
+  .clearButton {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70px;
+    border-radius: 13px;
+    background-color: $c-background;
+    box-shadow: 0 0 3px 0 transparentize($c-black, 0.8);
+    line-height: 25px;
+    font-size: 14px;
+    color: transparentize($c-text, 0.4);
+    transition: background-color 100ms;
+    overflow: hidden;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    &:hover::after {
+      background-color: transparentize($c-black, 0.9);
+    }
+
+    &:active::after {
+      background-color: transparentize($c-black, 0.8);
+    }
+  }
+}
+
+.event {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 30px;
+
+  &:hover {
+    background-color: $c-background-dark;
+
+    .deleteButton {
+      display: inline-block;
+    }
+  }
+
+  .action {
+    margin: -10px -30px;
+    padding: 10px 30px;
+    width: calc(100% + 60px);
+    text-align: inherit;
+
+    &:active {
+      background-color: transparentize($c-black, 0.85);
+    }
+  }
+
+  .message {
+    font-size: 15px;
+  }
+
+  .time {
+    color: transparentize($c-text, 0.5);
+    font-size: 13px;
+  }
+}
