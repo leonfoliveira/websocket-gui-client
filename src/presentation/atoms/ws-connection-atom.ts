@@ -2,8 +2,7 @@ import { atom, useRecoilState } from 'recoil';
 
 import { WsEventModel } from '@/domain/models';
 import { WsEventHandler } from '@/domain/usecases';
-
-import { useUsecase } from '../contexts';
+import { useUsecase } from '@/presentation/contexts';
 
 export enum WsConnectionStatus {
   disconnected,

@@ -1,0 +1,146 @@
+@import '~@/presentation/styles/colors.scss';
+
+.content {
+  position: relative;
+  flex: 1;
+  display: flex;
+  background-color: $c-background;
+  overflow: hidden;
+
+  .overflow {
+    flex: 1;
+    position: relative;
+    overflow: auto;
+
+    .eventList {
+      padding: 15px 0 30px;
+
+      .event {
+        position: relative;
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 10px 30px;
+
+        &:hover {
+          background-color: $c-background-dark;
+
+          .deleteButton {
+            display: inline-block;
+          }
+        }
+
+        .action {
+          margin: -10px -30px;
+          padding: 10px 30px;
+          width: calc(100% + 60px);
+          background-color: transparent;
+          border: 0;
+          text-align: inherit;
+          cursor: pointer;
+
+          &:active {
+            background-color: rgba($c-black, 0.15);
+          }
+        }
+
+        .time {
+          color: rgba($c-text, 0.5);
+          font-size: 14px;
+        }
+
+        .message {
+          font-size: 16px;
+        }
+
+        .deleteButton {
+          display: none;
+          position: absolute;
+          right: 10px;
+          border: 0;
+          padding: 0px 5px;
+          background-color: $c-background-dark;
+          box-shadow: 0 0 3px 0 rgba($c-black, 0.2);
+          cursor: pointer;
+          color: rgba($c-text, 0.5);
+          transition: background-color 100ms;
+
+          &:hover {
+            background-color: rgba($c-black, 0.05);
+          }
+
+          &:active {
+            background-color: rgba($c-black, 0.1);
+          }
+        }
+
+        &.connection-open,
+        &.connection-close,
+        &.error {
+          align-items: center;
+
+          .message {
+            margin-top: 5px;
+            border-radius: 20px;
+            padding: 0 20px;
+            font-weight: 600;
+            font-size: 15px;
+          }
+        }
+
+        &.connection-open {
+          .message {
+            background-color: rgba($c-success, 0.7);
+          }
+        }
+
+        &.connection-close,
+        &.error {
+          .message {
+            background-color: rgba($c-error, 0.7);
+          }
+        }
+
+        &.client-event {
+          align-items: flex-end;
+        }
+      }
+    }
+  }
+
+  .clearButton {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70px;
+    border: none;
+    border-radius: 13px;
+    background-color: $c-background;
+    box-shadow: 0 0 3px 0 rgba($c-black, 0.2);
+    line-height: 25px;
+    font-size: 14px;
+    color: rgba($c-text, 0.6);
+    cursor: pointer;
+    transition: background-color 100ms;
+    overflow: hidden;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    &:hover::after {
+      background-color: rgba($c-black, 0.1);
+    }
+
+    &:active::after {
+      background-color: rgba($c-black, 0.2);
+    }
+  }
+}
