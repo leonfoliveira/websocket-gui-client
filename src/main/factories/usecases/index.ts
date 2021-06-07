@@ -1,3 +1,3 @@
-export * from './ws-close-connection-factory';
-export * from './ws-open-connection-factory';
-export * from './ws-send-event-factory';
+export * from './ws/api-ws-close-connection-factory';
+export * from './ws/api-ws-open-connection-factory';
+export * from './ws/api-ws-send-message-factory';

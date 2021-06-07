@@ -1,0 +1,25 @@
+@import '~@/presentation/styles/colors.scss';
+@import '~@/presentation/styles/components.scss';
+
+.event {
+  align-items: center;
+
+  &--success {
+    .message {
+      background-color: transparentize($c-success, 0.3);
+    }
+  }
+
+  &--error {
+    .message {
+      background-color: transparentize($c-error, 0.3);
+    }
+  }
+
+  .message {
+    margin-top: 5px;
+    border-radius: 20px;
+    padding: 0 20px;
+    font-weight: 600;
+  }
+}

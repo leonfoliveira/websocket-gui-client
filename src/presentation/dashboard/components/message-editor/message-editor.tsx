@@ -1,6 +1,14 @@
 import clsx from 'clsx';
-import React from 'react';
-import { UseFormReturn } from 'react-hook-form';
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+
+import {
+  useWsConnection,
+  useWsEvents,
+  useWsHistory,
+  WsConnectionStatus,
+} from '@/presentation/atoms';
+import { useUsecase } from '@/presentation/contexts';
 
 import styles from './message-editor.module.scss';
 
@@ -8,32 +16,44 @@ export type EditFormType = {
   message: string;
 };
 
-type PropTypes = {
-  form: UseFormReturn<EditFormType>;
-  isDisabled: boolean;
-  handleSendEvent: (message: string) => void;
-};
+const MessageEditor: React.FC = () => {
+  const form = useForm<EditFormType>();
+  const { wsSendMessage } = useUsecase();
+  const connection = useWsConnection();
+  const history = useWsHistory();
+  const wsEvents = useWsEvents();
+  const wsHistory = useWsHistory();
 
-const MessageEditor: React.FC<PropTypes> = ({ form, isDisabled, handleSendEvent }) => {
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = form;
+  const handleSendEvent = (message: string): void => {
+    const clientEvent = wsSendMessage.send(message);
+    wsEvents.push(clientEvent);
+    wsHistory.push(clientEvent);
+  };
+
+  useEffect(() => {
+    if (!history.selected) return;
+    form.setValue('message', history.selected.message);
+    form.trigger('message');
+    history.select(null);
+  }, [history.selected]);
 
   return (
     <form
-      className={styles.editor}
-      onSubmit={handleSubmit(({ message }): void => handleSendEvent(message))}
+      className={styles.container}
+      onSubmit={form.handleSubmit(({ message }): void => handleSendEvent(message))}
     >
       <input
-        className={clsx(styles.input, errors.message && styles.error)}
+        className={clsx(styles.input, form.formState.errors.message && styles.error)}
         placeholder="Message"
-        {...register('message', { required: true })}
+        {...form.register('message', { required: true })}
         spellCheck="false"
       />
       <footer className={styles.footer}>
-        <button className={styles.submit} type="submit" disabled={isDisabled}>
+        <button
+          className={styles.submit}
+          type="submit"
+          disabled={connection.status !== WsConnectionStatus.connected}
+        >
           Send
         </button>
       </footer>

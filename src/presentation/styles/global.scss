@@ -19,9 +19,15 @@
 
 ::-webkit-scrollbar-thumb {
   border-radius: 5px;
-  background: rgba($c-black, 0.2);
+  background: transparentize($c-black, 0.8);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba($c-black, 0.3);
+  background: transparentize($c-black, 0.7);
+}
+
+button {
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
 }

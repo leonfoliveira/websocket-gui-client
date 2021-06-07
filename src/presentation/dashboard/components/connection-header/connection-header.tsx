@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-import { ConnectionStatus } from '@/presentation/helpers';
+import { WsConnectionStatus, useWsConnection, useWsEvents } from '@/presentation/atoms';
 
 import styles from './connection-header.module.scss';
 
@@ -10,19 +10,7 @@ type FormType = {
   url: string;
 };
 
-type PropTypes = {
-  isConnectionOpen: boolean;
-  connectionStatus: ConnectionStatus;
-  handleOpenConnection: (url: string) => void;
-  handleCloseConnection: () => void;
-};
-
-const ConnectionHeader: React.FC<PropTypes> = ({
-  isConnectionOpen,
-  connectionStatus,
-  handleOpenConnection,
-  handleCloseConnection,
-}) => {
+const ConnectionHeader: React.FC = () => {
   const {
     register,
     handleSubmit,
@@ -32,43 +20,49 @@ const ConnectionHeader: React.FC<PropTypes> = ({
       url: 'ws://',
     },
   });
+  const connection = useWsConnection();
+  const wsEvents = useWsEvents();
+
+  const handleOpenConnection = (url: string): void => connection.open(url, wsEvents.push);
+
+  const handleCloseConnection = connection.close;
 
   return (
-    <header className={styles.header}>
-      <div
+    <header className={styles.container}>
+      <span
         className={clsx(
           styles.status,
           {
-            [ConnectionStatus.connected]: styles.connected,
-            [ConnectionStatus.connecting]: styles.connecting,
-            [ConnectionStatus.disconnected]: styles.disconnected,
-          }[connectionStatus],
+            [WsConnectionStatus.connected]: styles['status--connected'],
+            [WsConnectionStatus.connecting]: styles['status--connecting'],
+            [WsConnectionStatus.disconnected]: styles['status--disconnected'],
+          }[connection.status],
         )}
         title={
           {
-            [ConnectionStatus.connected]: 'Connected',
-            [ConnectionStatus.connecting]: 'Connecting',
-            [ConnectionStatus.disconnected]: 'Disconnected',
-          }[connectionStatus]
+            [WsConnectionStatus.connected]: 'Connected',
+            [WsConnectionStatus.connecting]: 'Connecting',
+            [WsConnectionStatus.disconnected]: 'Disconnected',
+          }[connection.status]
         }
       />
       <form
         className={styles.form}
         onSubmit={handleSubmit(
-          isConnectionOpen ? handleCloseConnection : ({ url }): void => handleOpenConnection(url),
+          connection.isOpen ? handleCloseConnection : ({ url }): void => handleOpenConnection(url),
         )}
       >
         <input
-          className={clsx(styles.input, errors.url && styles.error)}
+          className={clsx(styles.input, errors.url && styles['input--error'])}
           type="text"
           placeholder="URL"
           title={errors.url && 'Must be a valid url starting with ws:// or wss://'}
           {...register('url', { required: true, pattern: /^wss?:\/\/.+/ })}
-          disabled={isConnectionOpen}
+          disabled={connection.isOpen}
           spellCheck="false"
         />
         <button className={styles.submit} type="submit">
-          {isConnectionOpen ? 'Close' : 'Open'}
+          {connection.isOpen ? 'Close' : 'Open'}
         </button>
       </form>
     </header>

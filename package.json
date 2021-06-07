@@ -1,6 +1,6 @@
 {
   "name": "websocket-client",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Leonardo Oliveira <leonfoliveira@gmail.com>",
   "repository": "https://github.com/leonfoliveira/websocket-client.git",
   "description": "A simple WebSocket client",
@@ -26,6 +26,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.0.1",
+    "recoil": "^0.3.1",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
@@ -96,6 +97,7 @@
   "build": {
     "extends": null,
     "appId": "com.leonfoliveira.websocket-client",
+    "productName": "WebSocket Client",
     "files": [
       "main.js",
       "build/**/*",

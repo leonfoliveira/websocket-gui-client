@@ -1,14 +1,14 @@
-export class WsClient {
+export class ApiWsClient {
   private static instance: WebSocket = null;
 
   /* istanbul ignore next */
   private constructor() {}
 
   public static getClient(): WebSocket {
-    return WsClient.instance;
+    return ApiWsClient.instance;
   }
 
   public static setClient(url: string): void {
-    WsClient.instance = new WebSocket(url);
+    ApiWsClient.instance = new WebSocket(url);
   }
 }
