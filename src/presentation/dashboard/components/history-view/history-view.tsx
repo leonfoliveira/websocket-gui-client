@@ -1,6 +1,7 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
 import { useWsHistory } from '@/presentation/atoms';
+import { useAutoScroll } from '@/presentation/helpers';
 
 import MessageEvent from '../message-event/message-event';
 
@@ -8,8 +9,7 @@ import styles from './history-view.module.scss';
 
 const HistoryView: React.FC = () => {
   const history = useWsHistory();
-
-  const scrollBottom = useRef<HTMLSpanElement>(null);
+  const autoScroll = useAutoScroll(history.events);
 
   return (
     <div className={styles.content}>
@@ -18,7 +18,7 @@ const HistoryView: React.FC = () => {
           {history.events.map((event) => (
             <MessageEvent key={event.key} event={event} onDelete={history.delete} />
           ))}
-          <span ref={scrollBottom} />
+          <span ref={autoScroll} />
         </ul>
       </div>
       <button type="button" className={styles.clearButton} onClick={history.clear}>

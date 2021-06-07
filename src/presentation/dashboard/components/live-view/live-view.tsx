@@ -1,6 +1,7 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
 import { useWsEvents } from '@/presentation/atoms';
+import { useAutoScroll } from '@/presentation/helpers';
 
 import MessageEvent from '../message-event/message-event';
 import StatusEvent from '../status-event/status-event';
@@ -9,8 +10,7 @@ import styles from './live-view.module.scss';
 
 const LiveView: React.FC = () => {
   const wsEvents = useWsEvents();
-
-  const scrollBottom = useRef<HTMLSpanElement>(null);
+  const autoScroll = useAutoScroll(wsEvents.events);
 
   return (
     <div className={styles.content}>
@@ -40,7 +40,7 @@ const LiveView: React.FC = () => {
               />
             ),
           )}
-          <span ref={scrollBottom} />
+          <span ref={autoScroll} />
         </ul>
       </div>
       <button type="button" className={styles.clearButton} onClick={wsEvents.clear}>

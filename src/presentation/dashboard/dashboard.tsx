@@ -19,11 +19,6 @@ const Dashboard: React.FC = () => {
   const wsEvents = useWsEvents();
   const wsHistory = useWsHistory();
 
-  // const scrollToBottom = (element: HTMLElement): void => {
-  //   const { top } = element.getBoundingClientRect();
-  //   if (top - 100 <= window.innerHeight) element?.scrollIntoView({ behavior: 'smooth' });
-  // };
-
   const handleSendEvent = (message: string): void => {
     const clientEvent = wsSendMessage.send(message);
     wsEvents.push(clientEvent);
