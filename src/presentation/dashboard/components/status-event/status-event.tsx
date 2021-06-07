@@ -8,21 +8,28 @@ import styles from './status-event.module.scss';
 
 type PropTypes = {
   event: WsEventModel;
-  text: string;
-  variant: 'success' | 'error';
   onDelete: WsEventHandler;
 };
 
-const StatusEvent: React.FC<PropTypes> = ({ event, text, variant, onDelete }) => {
-  return (
-    <li key={event.key} className={clsx(styles.event, styles[variant])}>
-      <time className={styles.time}>{event.time.toISOString()}</time>
-      <p className={styles.message}>{text}</p>
-      <button type="button" className={styles.deleteButton} onClick={(): void => onDelete(event)}>
-        X
-      </button>
-    </li>
-  );
-};
+const StatusEvent: React.FC<PropTypes> = ({ event, onDelete }) => (
+  <li
+    key={event.key}
+    className={clsx(styles.event, styles[event.type === 'connection' ? 'success' : 'error'])}
+  >
+    <time className={styles.time}>{event.time.toISOString()}</time>
+    <p className={styles.message}>
+      {
+        {
+          connection: 'Connected',
+          disconnection: 'Disconnected',
+          error: 'Connection Error',
+        }[event.type]
+      }
+    </p>
+    <button type="button" className={styles.deleteButton} onClick={(): void => onDelete(event)}>
+      X
+    </button>
+  </li>
+);
 
 export default StatusEvent;

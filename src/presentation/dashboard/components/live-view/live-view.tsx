@@ -25,19 +25,7 @@ const LiveView: React.FC = () => {
                 align={event.type === 'client-message' ? 'right' : 'left'}
               />
             ) : (
-              <StatusEvent
-                key={event.key}
-                event={event}
-                text={
-                  {
-                    connection: 'Connected',
-                    disconnection: 'Disconnected',
-                    error: 'Connection Error',
-                  }[event.type]
-                }
-                variant={event.type === 'connection' ? 'success' : 'error'}
-                onDelete={wsEvents.delete}
-              />
+              <StatusEvent key={event.key} event={event} onDelete={wsEvents.delete} />
             ),
           )}
           <span ref={autoScroll} />
