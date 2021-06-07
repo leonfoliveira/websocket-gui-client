@@ -1,4 +1,4 @@
-import { KeyGenerator } from '@/data/interfaces';
+import { KeyGenerator } from '@/application/interfaces';
 import { WsEventModel } from '@/domain/models';
 import { WsOpenConnection, Listeners, WsEventHandler } from '@/domain/usecases';
 

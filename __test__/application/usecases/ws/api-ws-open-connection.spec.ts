@@ -2,25 +2,25 @@ import faker from 'faker';
 import { MockProxy, mock } from 'jest-mock-extended';
 import MockDate from 'mockdate';
 
-import { KeyGenerator } from '@/data/interfaces';
-import { WsClient, WsOpenConnection } from '@/data/usecases';
+import { KeyGenerator } from '@/application/interfaces';
+import { ApiWsClient, ApiWsOpenConnection } from '@/application/usecases';
 
 import { mockWebSocket } from '@/test/config/mock-websocket';
 
 type SutTypes = {
-  sut: WsOpenConnection;
+  sut: ApiWsOpenConnection;
   keyGeneratorSpy: MockProxy<KeyGenerator>;
 };
 
 const makeSut = (): SutTypes => {
   const keyGeneratorSpy = mock<KeyGenerator>();
   keyGeneratorSpy.generate.mockReturnValue(faker.datatype.uuid());
-  const sut = new WsOpenConnection(keyGeneratorSpy);
+  const sut = new ApiWsOpenConnection(keyGeneratorSpy);
 
   return { sut, keyGeneratorSpy };
 };
 
-describe('WsOpenConnection', () => {
+describe('ApiWsOpenConnection', () => {
   beforeAll(() => {
     mockWebSocket();
     MockDate.set(new Date());
@@ -34,16 +34,16 @@ describe('WsOpenConnection', () => {
 
     sut.open(url);
 
-    expect(WsClient.getClient().url).toBe(url);
+    expect(ApiWsClient.getClient().url).toBe(url);
   });
 
   it('should create WebSocket client with correct listeners', () => {
     const { sut, keyGeneratorSpy } = makeSut();
     const listeners = {
-      onopen: jest.fn(),
-      onclose: jest.fn(),
-      onevent: jest.fn(),
-      onerror: jest.fn(),
+      onConnection: jest.fn(),
+      onDisconnection: jest.fn(),
+      onMessage: jest.fn(),
+      onError: jest.fn(),
     };
     const message: any = {
       lastEventId: faker.datatype.uuid(),
@@ -53,33 +53,33 @@ describe('WsOpenConnection', () => {
 
     sut.open(faker.internet.url(), listeners);
 
-    WsClient.getClient().onopen({} as any);
-    expect(listeners.onopen).toHaveBeenCalledWith({
+    ApiWsClient.getClient().onopen({} as any);
+    expect(listeners.onConnection).toHaveBeenCalledWith({
       key: keyGeneratorSpy.generate.mock.results[0].value,
       time: new Date(),
-      type: 'connection-open',
+      type: 'connection',
     });
-    WsClient.getClient().onclose({} as any);
-    expect(listeners.onclose).toHaveBeenCalledWith({
+    ApiWsClient.getClient().onclose({} as any);
+    expect(listeners.onDisconnection).toHaveBeenCalledWith({
       key: keyGeneratorSpy.generate.mock.results[0].value,
       time: new Date(),
-      type: 'connection-close',
+      type: 'disconnection',
     });
-    WsClient.getClient().onclose({} as any);
-    expect(listeners.onclose).toHaveBeenCalledWith({
+    ApiWsClient.getClient().onclose({} as any);
+    expect(listeners.onDisconnection).toHaveBeenCalledWith({
       key: keyGeneratorSpy.generate.mock.results[0].value,
       time: new Date(),
-      type: 'connection-close',
+      type: 'disconnection',
     });
-    WsClient.getClient().onmessage(message);
-    expect(listeners.onevent).toHaveBeenCalledWith({
+    ApiWsClient.getClient().onmessage(message);
+    expect(listeners.onMessage).toHaveBeenCalledWith({
       key: keyGeneratorSpy.generate.mock.results[0].value,
       time: new Date(),
-      type: 'server-event',
+      type: 'server-message',
       message: message.data,
     });
-    WsClient.getClient().onerror({} as any);
-    expect(listeners.onerror).toHaveBeenCalledWith({
+    ApiWsClient.getClient().onerror({} as any);
+    expect(listeners.onError).toHaveBeenCalledWith({
       key: keyGeneratorSpy.generate.mock.results[0].value,
       time: new Date(),
       type: 'error',

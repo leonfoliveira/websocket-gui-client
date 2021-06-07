@@ -2,28 +2,28 @@ import faker from 'faker';
 import { MockProxy, mock } from 'jest-mock-extended';
 import MockDate from 'mockdate';
 
-import { KeyGenerator } from '@/data/interfaces';
-import { WsClient, WsSendEvent } from '@/data/usecases';
+import { KeyGenerator } from '@/application/interfaces';
+import { ApiWsClient, ApiWsSendMessage } from '@/application/usecases';
 
 import { mockWebSocket } from '@/test/config/mock-websocket';
 
 type SutTypes = {
-  sut: WsSendEvent;
+  sut: ApiWsSendMessage;
   keyGeneratorSpy: MockProxy<KeyGenerator>;
 };
 
 const makeSut = (): SutTypes => {
   const keyGeneratorSpy = mock<KeyGenerator>();
   keyGeneratorSpy.generate.mockReturnValue(faker.datatype.uuid());
-  const sut = new WsSendEvent(keyGeneratorSpy);
+  const sut = new ApiWsSendMessage(keyGeneratorSpy);
 
   return { sut, keyGeneratorSpy };
 };
 
-describe('SendEvent', () => {
+describe('ApiWsSendMessage', () => {
   beforeAll(() => {
     mockWebSocket();
-    WsClient.setClient(faker.internet.url());
+    ApiWsClient.setClient(faker.internet.url());
     MockDate.set(new Date());
   });
 
@@ -35,7 +35,7 @@ describe('SendEvent', () => {
 
     sut.send(message);
 
-    expect(WsClient.getClient().send).toHaveBeenCalledWith(message);
+    expect(ApiWsClient.getClient().send).toHaveBeenCalledWith(message);
   });
 
   it('should return an EventModel', () => {
@@ -47,7 +47,7 @@ describe('SendEvent', () => {
     expect(result).toEqual({
       key: keyGeneratorSpy.generate.mock.results[0].value,
       time: new Date(),
-      type: 'client-event',
+      type: 'client-message',
       message,
     });
   });
