@@ -3,8 +3,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import { EventModel } from '@/domain/models';
-import { useConnection } from '@/presentation/contexts';
-import { ConnectionStatus } from '@/presentation/helpers';
+import { ConnectionStatus, useConnection } from '@/presentation/atoms';
 
 import styles from './connection-header.module.scss';
 
@@ -26,11 +25,11 @@ const ConnectionHeader: React.FC<PropTypes> = ({ eventHandler }) => {
       url: 'ws://',
     },
   });
-  const { isConnectionOpen, connectionStatus, openConnection, closeConnection } = useConnection();
+  const connection = useConnection();
 
-  const handleOpenConnection = (url: string): void => openConnection(url, eventHandler);
+  const handleOpenConnection = (url: string): void => connection.open(url, eventHandler);
 
-  const handleCloseConnection = (): void => closeConnection();
+  const handleCloseConnection = connection.close;
 
   return (
     <header className={styles.header}>
@@ -41,20 +40,20 @@ const ConnectionHeader: React.FC<PropTypes> = ({ eventHandler }) => {
             [ConnectionStatus.connected]: styles.connected,
             [ConnectionStatus.connecting]: styles.connecting,
             [ConnectionStatus.disconnected]: styles.disconnected,
-          }[connectionStatus],
+          }[connection.status],
         )}
         title={
           {
             [ConnectionStatus.connected]: 'Connected',
             [ConnectionStatus.connecting]: 'Connecting',
             [ConnectionStatus.disconnected]: 'Disconnected',
-          }[connectionStatus]
+          }[connection.status]
         }
       />
       <form
         className={styles.form}
         onSubmit={handleSubmit(
-          isConnectionOpen ? handleCloseConnection : ({ url }): void => handleOpenConnection(url),
+          connection.isOpen ? handleCloseConnection : ({ url }): void => handleOpenConnection(url),
         )}
       >
         <input
@@ -63,11 +62,11 @@ const ConnectionHeader: React.FC<PropTypes> = ({ eventHandler }) => {
           placeholder="URL"
           title={errors.url && 'Must be a valid url starting with ws:// or wss://'}
           {...register('url', { required: true, pattern: /^wss?:\/\/.+/ })}
-          disabled={isConnectionOpen}
+          disabled={connection.isOpen}
           spellCheck="false"
         />
         <button className={styles.submit} type="submit">
-          {isConnectionOpen ? 'Close' : 'Open'}
+          {connection.isOpen ? 'Close' : 'Open'}
         </button>
       </form>
     </header>

@@ -19,7 +19,14 @@ export const connectionState = atom({
   },
 });
 
-export const useConnection = (): any => {
+type HookReturnType = {
+  isOpen: boolean;
+  status: ConnectionStatus;
+  open: (url: string, eventHandler: EventHandler) => void;
+  close: () => void;
+};
+
+export const useConnection = (): HookReturnType => {
   const { openConnection, closeConnection } = useUsecase();
 
   const [{ isOpen, status }, setState] = useRecoilState(connectionState);

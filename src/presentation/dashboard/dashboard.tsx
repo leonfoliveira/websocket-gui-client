@@ -2,8 +2,8 @@ import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { EventModel } from '@/domain/models';
-import { useConnection, useUsecase } from '@/presentation/contexts';
-import { ConnectionStatus } from '@/presentation/helpers';
+import { ConnectionStatus, useConnection } from '@/presentation/atoms';
+import { useUsecase } from '@/presentation/contexts';
 
 import {
   ConnectionHeader,
@@ -17,7 +17,7 @@ import styles from './dashboard.module.scss';
 const Dashboard: React.FC = () => {
   const editForm = useForm<EditFormType>();
   const { sendEvent } = useUsecase();
-  const { connectionStatus } = useConnection();
+  const connection = useConnection();
 
   const [events, setEvents] = useState<EventModel[]>([]);
   const [history, setHistory] = useState<EventModel[]>([]);
@@ -87,7 +87,7 @@ const Dashboard: React.FC = () => {
           </div>
           <MessageEditor
             form={editForm}
-            isDisabled={connectionStatus !== ConnectionStatus.connected}
+            isDisabled={connection.status !== ConnectionStatus.connected}
             handleSendEvent={handleSendEvent}
           />
         </div>
