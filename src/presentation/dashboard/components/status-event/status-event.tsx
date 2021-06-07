@@ -1,15 +1,16 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import { EventModel } from '@/domain/models';
+import { WsEventModel } from '@/domain/models';
+import { WsEventHandler } from '@/domain/usecases';
 
 import styles from './status-event.module.scss';
 
 type PropTypes = {
-  event: EventModel;
+  event: WsEventModel;
   text: string;
   variant: 'success' | 'error';
-  onDelete: (event: EventModel) => void;
+  onDelete: WsEventHandler;
 };
 
 const StatusEvent: React.FC<PropTypes> = ({ event, text, variant, onDelete }) => {

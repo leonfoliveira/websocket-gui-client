@@ -1,1 +1,1 @@
-export * from './connection-atom';
+export * from './ws-connection-atom';

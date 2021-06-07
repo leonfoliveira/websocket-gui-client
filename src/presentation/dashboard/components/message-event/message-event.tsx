@@ -1,14 +1,15 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import { EventModel } from '@/domain/models';
+import { WsEventModel } from '@/domain/models';
+import { WsEventHandler } from '@/domain/usecases';
 
 import styles from './message-event.module.scss';
 
 type PropTypes = {
-  event: EventModel;
-  onClick?: (event: EventModel) => void;
-  onDelete: (event: EventModel) => void;
+  event: WsEventModel;
+  onClick?: WsEventHandler;
+  onDelete: WsEventHandler;
   align?: 'left' | 'right';
 };
 

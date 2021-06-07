@@ -2,8 +2,8 @@ import clsx from 'clsx';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-import { EventModel } from '@/domain/models';
-import { ConnectionStatus, useConnection } from '@/presentation/atoms';
+import { WsEventHandler } from '@/domain/usecases';
+import { WsConnectionStatus, useWsConnection } from '@/presentation/atoms';
 
 import styles from './connection-header.module.scss';
 
@@ -12,7 +12,7 @@ type FormType = {
 };
 
 type PropTypes = {
-  eventHandler: (event: EventModel) => void;
+  eventHandler: WsEventHandler;
 };
 
 const ConnectionHeader: React.FC<PropTypes> = ({ eventHandler }) => {
@@ -25,7 +25,7 @@ const ConnectionHeader: React.FC<PropTypes> = ({ eventHandler }) => {
       url: 'ws://',
     },
   });
-  const connection = useConnection();
+  const connection = useWsConnection();
 
   const handleOpenConnection = (url: string): void => connection.open(url, eventHandler);
 
@@ -37,16 +37,16 @@ const ConnectionHeader: React.FC<PropTypes> = ({ eventHandler }) => {
         className={clsx(
           styles.status,
           {
-            [ConnectionStatus.connected]: styles.connected,
-            [ConnectionStatus.connecting]: styles.connecting,
-            [ConnectionStatus.disconnected]: styles.disconnected,
+            [WsConnectionStatus.connected]: styles.connected,
+            [WsConnectionStatus.connecting]: styles.connecting,
+            [WsConnectionStatus.disconnected]: styles.disconnected,
           }[connection.status],
         )}
         title={
           {
-            [ConnectionStatus.connected]: 'Connected',
-            [ConnectionStatus.connecting]: 'Connecting',
-            [ConnectionStatus.disconnected]: 'Disconnected',
+            [WsConnectionStatus.connected]: 'Connected',
+            [WsConnectionStatus.connecting]: 'Connecting',
+            [WsConnectionStatus.disconnected]: 'Disconnected',
           }[connection.status]
         }
       />

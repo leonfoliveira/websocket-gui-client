@@ -1,3 +1,3 @@
-export * from './close-connection';
-export * from './open-connection';
-export * from './send-event';
+export * from './ws/ws-close-connection';
+export * from './ws/ws-open-connection';
+export * from './ws/ws-send-message';

@@ -1,1 +1,1 @@
-export * from './event-model';
+export * from './ws-event-model';

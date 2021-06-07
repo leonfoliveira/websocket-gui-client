@@ -1,17 +1,17 @@
 import { createContext, useContext } from 'react';
 
-import { CloseConnection, OpenConnection, SendEvent } from '@/domain/usecases';
+import { WsCloseConnection, WsOpenConnection, WsSendMessage } from '@/domain/usecases';
 
 type UsecasesContextType = {
-  closeConnection: CloseConnection;
-  openConnection: OpenConnection;
-  sendEvent: SendEvent;
+  wsCloseConnection: WsCloseConnection;
+  wsOpenConnection: WsOpenConnection;
+  wsSendMessage: WsSendMessage;
 };
 
 export const UsecasesContext = createContext<UsecasesContextType>({
-  closeConnection: null,
-  openConnection: null,
-  sendEvent: null,
+  wsCloseConnection: null,
+  wsOpenConnection: null,
+  wsSendMessage: null,
 });
 
 export const useUsecase = (): UsecasesContextType => useContext(UsecasesContext);

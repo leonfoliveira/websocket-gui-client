@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { EventModel } from '@/domain/models';
-import { ConnectionStatus, useConnection } from '@/presentation/atoms';
+import { WsEventModel } from '@/domain/models';
+import { WsConnectionStatus, useWsConnection } from '@/presentation/atoms';
 import { useUsecase } from '@/presentation/contexts';
 
 import {
@@ -16,11 +16,11 @@ import styles from './dashboard.module.scss';
 
 const Dashboard: React.FC = () => {
   const editForm = useForm<EditFormType>();
-  const { sendEvent } = useUsecase();
-  const connection = useConnection();
+  const { wsSendMessage } = useUsecase();
+  const connection = useWsConnection();
 
-  const [events, setEvents] = useState<EventModel[]>([]);
-  const [history, setHistory] = useState<EventModel[]>([]);
+  const [events, setEvents] = useState<WsEventModel[]>([]);
+  const [history, setHistory] = useState<WsEventModel[]>([]);
   const scrollBottom = useRef<HTMLSpanElement>(null);
   const historyScrollBottom = useRef<HTMLSpanElement>(null);
 
@@ -29,12 +29,12 @@ const Dashboard: React.FC = () => {
     if (top - 100 <= window.innerHeight) element?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const pushEvent = (event: EventModel): void => {
+  const pushEvent = (event: WsEventModel): void => {
     setEvents((currentState) => [...currentState, event]);
     scrollToBottom(scrollBottom.current);
   };
 
-  const pushHistory = (event: EventModel): void => {
+  const pushHistory = (event: WsEventModel): void => {
     setHistory((currentState) => [...currentState, event]);
     scrollToBottom(historyScrollBottom.current);
   };
@@ -44,21 +44,21 @@ const Dashboard: React.FC = () => {
   const handleClearHistory = (): void => setHistory([]);
 
   const handleSendEvent = (message: string): void => {
-    const clientEvent = sendEvent.send(message);
+    const clientEvent = wsSendMessage.send(message);
     pushEvent(clientEvent);
     pushHistory(clientEvent);
   };
 
-  const handleCopyEvent = (event: EventModel): void => {
+  const handleCopyEvent = (event: WsEventModel): void => {
     editForm.setValue('message', event.message);
     editForm.trigger('message');
   };
 
-  const handleDeleteHistoryEvent = (event: EventModel): void => {
+  const handleDeleteHistoryEvent = (event: WsEventModel): void => {
     setHistory((currentValue) => currentValue.filter((ev) => ev.key !== event.key));
   };
 
-  const handleDeleteEvent = (event: EventModel): void => {
+  const handleDeleteEvent = (event: WsEventModel): void => {
     setEvents((currentValue) => currentValue.filter((ev) => ev.key !== event.key));
   };
 
@@ -87,7 +87,7 @@ const Dashboard: React.FC = () => {
           </div>
           <MessageEditor
             form={editForm}
-            isDisabled={connection.status !== ConnectionStatus.connected}
+            isDisabled={connection.status !== WsConnectionStatus.connected}
             handleSendEvent={handleSendEvent}
           />
         </div>
@@ -96,12 +96,12 @@ const Dashboard: React.FC = () => {
             <div className={styles.overflow}>
               <ul className={styles.eventList}>
                 {events.map((event) =>
-                  event.type === 'client-event' || event.type === 'server-event' ? (
+                  event.type === 'client-message' || event.type === 'server-message' ? (
                     <MessageEvent
                       key={event.key}
                       event={event}
                       onDelete={handleDeleteEvent}
-                      align={event.type === 'client-event' ? 'right' : 'left'}
+                      align={event.type === 'client-message' ? 'right' : 'left'}
                     />
                   ) : (
                     <StatusEvent
@@ -109,12 +109,12 @@ const Dashboard: React.FC = () => {
                       event={event}
                       text={
                         {
-                          'connection-open': 'Connection Open',
-                          'connection-close': 'Connection Closed',
+                          connection: 'Connected',
+                          disconnection: 'Disconnected',
                           error: 'Connection Error',
                         }[event.type]
                       }
-                      variant={event.type === 'connection-open' ? 'success' : 'error'}
+                      variant={event.type === 'connection' ? 'success' : 'error'}
                       onDelete={handleDeleteEvent}
                     />
                   ),
