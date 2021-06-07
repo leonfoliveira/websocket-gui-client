@@ -1,6 +1,8 @@
 import React from 'react';
+import { RecoilRoot } from 'recoil';
 
 import '@/presentation/styles/global.scss';
+
 import {
   makeWsCloseConnection,
   makeWsOpenConnection,
@@ -10,17 +12,19 @@ import { UsecasesContext, ConnectionProvider } from '@/presentation/contexts';
 import Dashboard from '@/presentation/dashboard/dashboard';
 
 const Root: React.FC = () => (
-  <UsecasesContext.Provider
-    value={{
-      closeConnection: makeWsCloseConnection(),
-      openConnection: makeWsOpenConnection(),
-      sendEvent: makeWsSendEvent(),
-    }}
-  >
-    <ConnectionProvider>
-      <Dashboard />
-    </ConnectionProvider>
-  </UsecasesContext.Provider>
+  <RecoilRoot>
+    <UsecasesContext.Provider
+      value={{
+        closeConnection: makeWsCloseConnection(),
+        openConnection: makeWsOpenConnection(),
+        sendEvent: makeWsSendEvent(),
+      }}
+    >
+      <ConnectionProvider>
+        <Dashboard />
+      </ConnectionProvider>
+    </UsecasesContext.Provider>
+  </RecoilRoot>
 );
 
 export default Root;
