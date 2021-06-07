@@ -16,7 +16,12 @@ const HistoryView: React.FC = () => {
       <div className={styles.overflow}>
         <ul className={styles.eventList} role="menu">
           {history.events.map((event) => (
-            <MessageEvent key={event.key} event={event} onDelete={history.delete} />
+            <MessageEvent
+              key={event.key}
+              event={event}
+              onDelete={history.delete}
+              onClick={history.select}
+            />
           ))}
           <span ref={autoScroll} />
         </ul>

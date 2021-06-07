@@ -25,11 +25,6 @@ const Dashboard: React.FC = () => {
     wsHistory.push(clientEvent);
   };
 
-  // const handleCopyEvent = (event: WsEventModel): void => {
-  //   editForm.setValue('message', event.message);
-  //   editForm.trigger('message');
-  // };
-
   return (
     <main className={styles.dashboard}>
       <ConnectionHeader eventHandler={wsEvents.push} />

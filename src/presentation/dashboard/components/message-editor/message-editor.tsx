@@ -1,6 +1,8 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { UseFormReturn } from 'react-hook-form';
+
+import { useWsHistory } from '@/presentation/atoms';
 
 import styles from './message-editor.module.scss';
 
@@ -15,21 +17,23 @@ type PropTypes = {
 };
 
 const MessageEditor: React.FC<PropTypes> = ({ form, isDisabled, handleSendEvent }) => {
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = form;
+  const history = useWsHistory();
+
+  useEffect(() => {
+    if (!history.selected) return;
+    form.setValue('message', history.selected.message);
+    form.trigger('message');
+  }, [history.selected]);
 
   return (
     <form
       className={styles.editor}
-      onSubmit={handleSubmit(({ message }): void => handleSendEvent(message))}
+      onSubmit={form.handleSubmit(({ message }): void => handleSendEvent(message))}
     >
       <input
-        className={clsx(styles.input, errors.message && styles.error)}
+        className={clsx(styles.input, form.formState.errors.message && styles.error)}
         placeholder="Message"
-        {...register('message', { required: true })}
+        {...form.register('message', { required: true })}
         spellCheck="false"
       />
       <footer className={styles.footer}>
