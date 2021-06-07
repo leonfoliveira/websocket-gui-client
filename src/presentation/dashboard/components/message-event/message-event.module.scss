@@ -1,0 +1,65 @@
+@import '~@/presentation/styles/colors.scss';
+
+.event {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  padding: 10px 30px;
+
+  &:hover {
+    background-color: $c-background-dark;
+
+    .deleteButton {
+      display: inline-block;
+    }
+  }
+
+  .action {
+    margin: -10px -30px;
+    padding: 10px 30px;
+    width: calc(100% + 60px);
+    background-color: transparent;
+    border: 0;
+    text-align: inherit;
+    cursor: pointer;
+
+    &:active {
+      background-color: rgba($c-black, 0.15);
+    }
+  }
+
+  .time {
+    color: rgba($c-text, 0.5);
+    font-size: 14px;
+  }
+
+  .message {
+    font-size: 16px;
+  }
+
+  .deleteButton {
+    display: none;
+    position: absolute;
+    right: 10px;
+    border: 0;
+    padding: 0px 5px;
+    background-color: $c-background-dark;
+    box-shadow: 0 0 3px 0 rgba($c-black, 0.2);
+    cursor: pointer;
+    color: rgba($c-text, 0.5);
+    transition: background-color 100ms;
+
+    &:hover {
+      background-color: rgba($c-black, 0.05);
+    }
+
+    &:active {
+      background-color: rgba($c-black, 0.1);
+    }
+  }
+
+  &.--right {
+    align-items: flex-end;
+  }
+}

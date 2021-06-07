@@ -1,0 +1,67 @@
+@import '~@/presentation/styles/colors.scss';
+
+.event {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 10px 30px;
+
+  &:hover {
+    background-color: $c-background-dark;
+
+    .deleteButton {
+      display: inline-block;
+    }
+  }
+
+  .message {
+    margin-top: 5px;
+    border-radius: 20px;
+    padding: 0 20px;
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  &.success {
+    .message {
+      background-color: rgba($c-success, 0.7);
+    }
+  }
+
+  &.error {
+    .message {
+      background-color: rgba($c-error, 0.7);
+    }
+  }
+
+  .time {
+    color: rgba($c-text, 0.5);
+    font-size: 14px;
+  }
+
+  .message {
+    font-size: 16px;
+  }
+
+  .deleteButton {
+    display: none;
+    position: absolute;
+    right: 10px;
+    border: 0;
+    padding: 0px 5px;
+    background-color: $c-background-dark;
+    box-shadow: 0 0 3px 0 rgba($c-black, 0.2);
+    cursor: pointer;
+    color: rgba($c-text, 0.5);
+    transition: background-color 100ms;
+
+    &:hover {
+      background-color: rgba($c-black, 0.05);
+    }
+
+    &:active {
+      background-color: rgba($c-black, 0.1);
+    }
+  }
+}

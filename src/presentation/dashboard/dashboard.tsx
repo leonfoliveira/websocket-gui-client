@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -6,7 +5,13 @@ import { EventModel } from '@/domain/models';
 import { useConnection, useUsecase } from '@/presentation/contexts';
 import { ConnectionStatus } from '@/presentation/helpers';
 
-import { ConnectionHeader, MessageEditor, EditFormType } from './components';
+import {
+  ConnectionHeader,
+  MessageEditor,
+  EditFormType,
+  MessageEvent,
+  StatusEvent,
+} from './components';
 import styles from './dashboard.module.scss';
 
 const Dashboard: React.FC = () => {
@@ -66,23 +71,12 @@ const Dashboard: React.FC = () => {
             <div className={styles.overflow}>
               <ul className={styles.eventList} role="menu">
                 {history.map((event) => (
-                  <li key={event.key} role="menuitem" className={styles.event}>
-                    <button
-                      className={styles.action}
-                      type="button"
-                      onClick={(): void => handleCopyEvent(event)}
-                    >
-                      <time className={styles.time}>{event.time.toISOString()}</time>
-                      <p className={styles.message}>{event.message}</p>
-                    </button>
-                    <button
-                      type="button"
-                      className={styles.deleteButton}
-                      onClick={(): void => handleDeleteHistoryEvent(event)}
-                    >
-                      X
-                    </button>
-                  </li>
+                  <MessageEvent
+                    key={event.key}
+                    event={event}
+                    onClick={handleCopyEvent}
+                    onDelete={handleDeleteHistoryEvent}
+                  />
                 ))}
                 <span ref={historyScrollBottom} />
               </ul>
@@ -101,25 +95,30 @@ const Dashboard: React.FC = () => {
           <div className={styles.content}>
             <div className={styles.overflow}>
               <ul className={styles.eventList}>
-                {events.map((event) => (
-                  <li key={event.key} className={clsx(styles.event, styles[event.type])}>
-                    <time className={styles.time}>{event.time.toISOString()}</time>
-                    <p className={styles.message}>
-                      {{
-                        'connection-open': 'Connection Open',
-                        'connection-close': 'Connection Closed',
-                        error: 'Connection Error',
-                      }[event.type] || event.message}
-                    </p>
-                    <button
-                      type="button"
-                      className={styles.deleteButton}
-                      onClick={(): void => handleDeleteEvent(event)}
-                    >
-                      X
-                    </button>
-                  </li>
-                ))}
+                {events.map((event) =>
+                  event.type === 'client-event' || event.type === 'server-event' ? (
+                    <MessageEvent
+                      key={event.key}
+                      event={event}
+                      onDelete={handleDeleteEvent}
+                      align={event.type === 'client-event' ? 'right' : 'left'}
+                    />
+                  ) : (
+                    <StatusEvent
+                      key={event.key}
+                      event={event}
+                      text={
+                        {
+                          'connection-open': 'Connection Open',
+                          'connection-close': 'Connection Closed',
+                          error: 'Connection Error',
+                        }[event.type]
+                      }
+                      variant={event.type === 'connection-open' ? 'success' : 'error'}
+                      onDelete={handleDeleteEvent}
+                    />
+                  ),
+                )}
                 <span ref={scrollBottom} />
               </ul>
             </div>
