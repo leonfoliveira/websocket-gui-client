@@ -2,8 +2,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-import { WsEventHandler } from '@/domain/usecases';
-import { WsConnectionStatus, useWsConnection } from '@/presentation/atoms';
+import { WsConnectionStatus, useWsConnection, useWsEvents } from '@/presentation/atoms';
 
 import styles from './connection-header.module.scss';
 
@@ -11,11 +10,7 @@ type FormType = {
   url: string;
 };
 
-type PropTypes = {
-  eventHandler: WsEventHandler;
-};
-
-const ConnectionHeader: React.FC<PropTypes> = ({ eventHandler }) => {
+const ConnectionHeader: React.FC = () => {
   const {
     register,
     handleSubmit,
@@ -26,8 +21,9 @@ const ConnectionHeader: React.FC<PropTypes> = ({ eventHandler }) => {
     },
   });
   const connection = useWsConnection();
+  const wsEvents = useWsEvents();
 
-  const handleOpenConnection = (url: string): void => connection.open(url, eventHandler);
+  const handleOpenConnection = (url: string): void => connection.open(url, wsEvents.push);
 
   const handleCloseConnection = connection.close;
 
